@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>Controleur</servlet-name>
+        <servlet-class>controleur.Controleur</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControleurDirecteur</servlet-name>
+        <servlet-class>controleur.ControleurDirecteur</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControleurEleve</servlet-name>
+        <servlet-class>controleur.ControleurEleve</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControleurSurveillant</servlet-name>
+        <servlet-class>controleur.ControleurSurveillant</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Controleur</servlet-name>
+        <url-pattern>/Controleur</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControleurDirecteur</servlet-name>
+        <url-pattern>/ControleurDirecteur</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControleurEleve</servlet-name>
+        <url-pattern>/ControleurEleve</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControleurSurveillant</servlet-name>
+        <url-pattern>/ControleurSurveillant</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>Controleur</welcome-file>
+    </welcome-file-list>
+    
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <include-prelude>/WEB-INF/en_tete.jsp</include-prelude>
+            <include-prelude>/WEB-INF/footer.jsp</include-prelude>
+            <include-prelude>/WEB-INF/taglib.jsp</include-prelude>
+        </jsp-property-group>
+    </jsp-config>
+</web-app>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Accueil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="dist/css/accueil.css"/>
+        <link rel="stylesheet" href="dist/css/bootstrap.css"/>
+        <link rel="icon" type="image/png" href="Image/icone_logo.png" sizes="310x310" />
+        <style>
+            * {box-sizing:border-box}
+
+            /* Slideshow container */
+            .slideshow-container {
+                max-width: 5000px;
+                position: relative;
+                margin: auto;
+            }
+
+            /* Hide the images by default */
+            .mySlides {
+                width: 100%;
+                display: none;
+            }
+
+            /* Next & previous buttons */
+            .prev, .next {
+                cursor: pointer;
+                position: absolute;
+                top: 50%;
+                width: auto;
+                margin-top: -22px;
+                padding: 16px;
+                color: white;
+                font-weight: bold;
+                font-size: 18px;
+                transition: 1.6s ease;
+                border-radius: 0 3px 3px 0;
+            }
+
+            /* Position the "next button" to the right */
+            .next {
+                right: 0;
+                border-radius: 3px 0 0 3px;
+            }
+
+            /* On hover, add a black background color with a little bit see-through */
+            .prev:hover, .next:hover {
+                background-color: rgba(0,0,0,0.8);
+            }
+
+            /* Caption text */
+            .text {
+                font-size: 50px;
+                color: #f1c40f;
+                font-family:unset;
+                padding: 8px 12px;
+                position: absolute;
+                bottom: 8px;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Number text (1/3 etc) */
+            .numbertext {
+                color: #f2f2f2;
+                font-size: 12px;
+                padding: 8px 12px;
+                position: absolute;
+                top: 0;
+            }
+            .bouton{
+                align-content: center;
+            }
+
+            /* The dots/bullets/indicators */
+            .dot {
+                cursor: pointer;
+                height: 15px;
+                width: 15px;
+                margin: 0 2px;
+                background-color: #bbb;
+                border-radius: 50%;
+                display: inline-block;
+                transition: background-color 0.6s ease; 
+            }
+
+            .active, .dot:hover {
+                background-color: #717171;
+            }
+
+            /* Fading animation */
+            .fade {
+                transition:transform 800ms;
+                transform: scale(1);
+                -webkit-animation-name: fade;
+                -webkit-animation-duration: 1.5s; 
+                animation-name: fade;
+                /* animation-duration: 1.5s; */
+            } 
+
+            @-webkit-keyframes fade {
+                from {opacity: .4} 
+                to {opacity: 1}
+            }
+
+            @keyframes fade {
+                from {opacity: .4} 
+                to {opacity: 1}
+            }
+            .footer {
+                /*  position: fixed; */
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 20vh;
+                background-color: #f1c40f;
+                color: white;
+                text-align: center;
+            }
+            .bas-page{
+                display: flex;
+                text-align: right;
+                padding-left: 24px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <div class="navbar-fixed-top" style="border-bottom: 1px solid #ffffff">
+                <div class="head" >
+                    <div id="head-right">
+                        <img src="Image/log.png" alt="Ecole" id="logo">
+                        <h2 id="sunu">Ecole Franco-Arabe El Hadji Amadou Lamine Diene</h2>
+                    </div>
+
+                    <div> 
+                       <!-- <a href="aPropos.jsp" class="lien">A propos</a>
+                        <a href="Controleur?action=portailParent" class="lien">Portail Parent</a>-->
+                        <a href="Controleur?action=connection" class="lien">Se Connecter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Slideshow container -->
+        <div class="slideshow-container imag">
+            <img class="mySlides" src="images/fr_ar03.JPG">
+            <img class="mySlides" src="images/fr_ar01.JPG">
+            <img class="mySlides" src="images/fr_ar04.JPG">
+            <!--<img class="mySlides" src="images/10.jpg">
+            <img class="mySlides" src="images/11.jpg">
+            <img class="mySlides" src="images/12.jpg">-->
+        </div>
+
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-xs-12 doublet">
+                    <h3>Description de L'école</h3> 
+                    <p>
+                        L'école franco-arabe El Hadji Amadou Lamine Diene est située à la Geule Tapée Rue 63 x 64 Dakar
+                        
+                    </p>
+
+                </div>
+                <div class="col-md-4 col-xs-12 doublet">
+                    <h3>
+                        Le rôle du Directeur
+                    </h3>
+                    <p>
+                        Veille, avec l’ensemble du personnel de l’école, à créer un milieu scolaire accueillant,
+                        stimulant et sécuritaire pour tous. Voit à la mise en œuvre du plan de lutte contre l'intimidation
+                        et la violence de l’école. Voit à l’application des règles de conduite et des mesures de sécurité de l’école, qui prévoient les comportements attendus et proscrits ainsi que les sanctions applicables selon la gravité de l’acte.
+Reçoit et traite avec diligence les déclarations d’événements relatifs à la violence et à l’intimidation.
+Communique promptement avec les parents des élèves directement impliqués, après avoir considéré l’intérêt de ceux-ci, pour les informer des mesures prévues dans le plan de lutte contre l'intimidation et la violence.
+Prévoit des mesures de remédiation et de réinsertion lors de la suspension d’un élève.
+Transmet au directeur général de la commission scolaire et à l’élève un rapport sommaire sur l’acte de violence ou d’intimidation et son suivi.
+                    </p>
+                </div>
+                <div class="col-md-4 col-xs-12 doublet">
+                    <h3>
+                        Importance du directeur
+                    </h3>
+                    <p>
+                        Un bon directeur d’école peut réduire le décrochage scolaire.
+                        
+                        Pour devenir directeur, il faut d’abord commencer par compléter le baccalauréat 
+                        de quatre ans en enseignement. Il faut aussi obtenir un brevet d’enseignant et posséder
+                        au moins huit ans d’expérience avant de postuler. Il est ensuite possible de suivre une 
+                        formation continue en gestion de l’éducation. L’Université de Sherbrooke offre plusieurs
+                        formations destinées aux nouveaux directeurs, dont un microprogramme et un diplôme de 2e
+                        cycle en gestion de l’éducation, de même qu’une maîtrise en gestion de l’éducation et de 
+                        la formation.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer_container">
+
+        </div>
+        <div class="footer">
+            <div class="bas-page">
+                <h3 style="text-align: center;">Sunu Ecole</h3>
+            </div>
+            <p>Sunu Ecole, une solution pour une rapidité de gestion des évaluations pédagogiques des écoles moyens
+                et tous autres formations ayant un systeme d'enseignement identiques à ces dernières.
+                Faites confiances au leader de la création web pour établissements scolaires 7Tup</p>
+
+            <p>Develop and Design by 7Tup Entreprise</p>
+
+        </div>
+        <script language="JavaScript">
+            var slideIndex = 0;
+            showSlides();
+
+            function showSlides() {
+                var i;
+                var slides = document.getElementsByClassName("mySlides");
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                slideIndex++;
+                if (slideIndex > slides.length) {
+                    slideIndex = 1
+                }
+                slides[slideIndex - 1].style.display = "block";
+                setTimeout(showSlides, 5000); // Change image every 5 seconds
+            }
+
+        </script> 
+    </body>
+</html>

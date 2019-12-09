@@ -1,0 +1,60 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15 oct. 2018, 23:45:38
+    Author     : Moussa Joseph Sarr
+*/
+
+/*.page{
+
+
+    width: 100%;
+    height: 100vh;
+   background: url('../Image/carousel.jpg');
+
+}*/
+.imag{
+    padding-top: 100px;
+}
+.head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0vh;
+    /*   margin-left: 4vw;
+      margin-right: 4vw; */
+    align-items: center;
+    background-color:#00a1dc;
+}
+#head-right{
+    display: flex;
+    flex-direction: row;
+}
+.lien{
+    font-size: 18px;
+    font-family: titillium-web-regular;
+    color: white;
+    padding: 1vh;
+    background: #00a1dc;
+    border-radius: 0.5vw;
+
+}
+.lien:hover{
+    background-color: #f1c40f;
+    text-decoration: none;
+}
+#sunu{
+    font-size: 25px;
+    color: #f1c40f;
+    font-family:unset;
+    margin-left: 15vw;
+    font-weight: bold;
+    margin-top: 7vh;
+
+}
+#logo{
+    height: 18vh;
+}
