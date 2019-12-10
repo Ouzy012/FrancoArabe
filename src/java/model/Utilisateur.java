@@ -19,6 +19,19 @@ public class Utilisateur {
     private String prenom;
     private String telephone;
     private String profils;
+    private String nomImgPers;
+
+    public String getNomImgPers() {
+        return nomImgPers;
+    }
+
+    public void setNomImgPers(String nomImgPers) {
+        this.nomImgPers = nomImgPers;
+    }
+    
+    
+    
+    
 
     public String getProfils() {
         return profils;

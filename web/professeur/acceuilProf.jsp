@@ -11,14 +11,22 @@
         <title>Acceuil</title> 
     </head>
     <body>
-        <%
-            if (session.getAttribute("log") != null) {
+        <%            if (session.getAttribute("log") != null) {
 
         %>         
 
         <!--///////////////////////////////// -->
         <%@include file="barreNavProf.jsp" %>
-        
+        <script>
+            <c:if test="${!empty msg1}">
+            alert("Photo de profil modifier avec success");
+            </c:if>
+
+            <c:if test="${!empty msg2}">
+            alert("Photo de profil supprimer avec success");
+            </c:if>
+        </script>
+
         <% } else {
         %>
         <jsp:forward page="../vue/SeConnecter.jsp"/>

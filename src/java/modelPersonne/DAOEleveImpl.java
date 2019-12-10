@@ -234,7 +234,7 @@ public class DAOEleveImpl {
             while (rs.next()) {
                 Arabe ar = new Arabe();
                 ar.setNomEnArabe(rs.getString("nomArabe"));
-                System.out.println(rs.getString("nomArabe")+ "  "+rs.getString("nomMatiere"));
+                System.out.println(rs.getString("nomArabe") + "  " + rs.getString("nomMatiere"));
                 ar.setNomEnFrancais(rs.getString("nomMatiere"));
                 listMatiere.add(ar);
             }
@@ -269,7 +269,7 @@ public class DAOEleveImpl {
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requete = "select personne.idPersonne,personne.prenom,personne.nom,personne.adresse,personne.adresse,professeur.loginProf,professeur.motDePasse from personne,professeur where professeur.loginProf='" + loginProf + "' and professeur.idPersonne=personne.idPersonne";
+            String requete = "select personne.idPersonne,personne.prenom,personne.nom,personne.adresse,personne.nomImgPers,professeur.loginProf,professeur.motDePasse from personne,professeur where professeur.loginProf='" + loginProf + "' and professeur.idPersonne=personne.idPersonne";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
@@ -281,6 +281,7 @@ public class DAOEleveImpl {
                 uti.setPrenom(rs.getString("prenom"));
                 uti.setNom(rs.getString("nom"));
                 uti.setAdresse(rs.getString("adresse"));
+                uti.setNomImgPers(rs.getString("nomImgPers"));
                 compteProf.add(uti);
             }
         } catch (Exception e) {
@@ -289,7 +290,7 @@ public class DAOEleveImpl {
         return compteProf;
     }
 
-    public void modifierCompte(String login, String ancienMdp, String idPersonne) {
+    public void modifierCompte(String login, String ancienMdp, String idPersonne, String prenom, String nom, String adresse) {
         Connection con;
         Statement st;
         try {
@@ -297,10 +298,31 @@ public class DAOEleveImpl {
             String requete1 = "UPDATE  professeur SET  motDePasse ='" + ancienMdp + "'" + "WHERE  idPersonne='" + idPersonne + "'";
             st = con.createStatement();
             int rs1 = st.executeUpdate(requete1);
+            if (rs1 > 0) {
+                String requete2 = "update personne set prenom='" + prenom + "' and nom='" + nom + "' and adresse='" + adresse + "' WHERE  idPersonne='" + idPersonne + "'";
+                int rs2 = st.executeUpdate(requete2);
+            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    public Boolean ajouterImageCompte(String idPersonne, String nomImgPers) {
+        Connection con;
+        Statement st;
+        boolean result = false;
+        try {
+            con = daoFactory.getConnection();
+            String requete1 = "UPDATE  personne SET  nomImgPers ='" + nomImgPers + "'" + "WHERE  idPersonne='" + idPersonne + "'";
+            st = con.createStatement();
+            int rs1 = st.executeUpdate(requete1);
+            result = true;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
     }
 
     public ArrayList<String> selectAnnee() {
@@ -480,13 +502,13 @@ public class DAOEleveImpl {
     }
 
     /////////////////////////////////////////////////////joe////////////////////////////////////////////////////////////////// 
-    public Boolean validerPayement(String login,String nomClasse,String anneeSco,String mois) {
+    public Boolean validerPayement(String login, String nomClasse, String anneeSco, String mois) {
 
         Boolean resultat = false;
         try {
             con = daoFactory.getConnection();
             PreparedStatement pst;
-            String requete = "update mensuel set statutMensuel=? where login= '" + login + "' and nomClasse='"+nomClasse+"' and anneeScolaire='"+anneeSco+"' and mois='"+mois+"'";
+            String requete = "update mensuel set statutMensuel=? where login= '" + login + "' and nomClasse='" + nomClasse + "' and anneeScolaire='" + anneeSco + "' and mois='" + mois + "'";
             pst = con.prepareStatement(requete);
             pst.setString(1, "1");
             int result = pst.executeUpdate();
@@ -503,14 +525,13 @@ public class DAOEleveImpl {
         return resultat;
     }
 
-    
-    public ArrayList<Mensuel> listerMensuel(String loginEleve,String nomClasse,String anneSco) {
+    public ArrayList<Mensuel> listerMensuel(String loginEleve, String nomClasse, String anneSco) {
 
         ArrayList<Mensuel> mensuel = new ArrayList();
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requete = "select mois,statutMensuel from mensuel  where login='" + loginEleve + "' and nomClasse='"+nomClasse+"' and anneeScolaire='"+anneSco+"'";
+            String requete = "select mois,statutMensuel from mensuel  where login='" + loginEleve + "' and nomClasse='" + nomClasse + "' and anneeScolaire='" + anneSco + "'";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
@@ -526,7 +547,7 @@ public class DAOEleveImpl {
 
         return mensuel;
     }
-    
+
     public Boolean mensualite(Mensuel mensuel) {
         Boolean resultat = false;
         Statement st;

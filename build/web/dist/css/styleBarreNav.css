@@ -8,81 +8,10 @@ and open the template in the editor.
     Author     : Ouzy NDIAYE
 */
 
-.navbar-default{
-    background-color: #00a1dc;
-
+.img_user{
+    width: 30%;    
 }
-.navbar-nav{
-    font-size: 15px;
-    color: white;
-    font-weight: bold;
+.img_user:hover{
+    width: 50%;
 }
-#lien2{
-    text-decoration: none;
-    color: white;
-}
-#lien2:hover{
-    text-decoration: none;
-    color: white;
-}
-#lien1{
-    text-decoration: none;
-    color: white;
-}
-#lien1:hover{
-    text-decoration: none;
-    background-color: #ED7F10;
-    /*background-color: red;*/
-}
-#info_user{
-    text-align: center;
-    font-size: 20px;
-}
-#img_search{
-    width: 20px;
-    height: 20px;
-}
-.titre{
-    text-align: center;
-}
-.bouton_table{
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-}
-.bouton_table:hover{
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-}
-#entete{
-    text-align: center;
-}
-h1{
-    text-align: center;
-}
-.test{
-    text-align: center;
-}
-.test a{
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-}
-.test:hover{
-    background-color: #2ecc71;
-}
-h4{
-    text-align: center;
-}
-.fonction{
-    text-align: center;
-    font-weight: bold;
-    font-size: 17px;
-}
-#modifier{
-    width: 10px;
-    height: 10px;
-}
-
 /*////Style Checkbox**/

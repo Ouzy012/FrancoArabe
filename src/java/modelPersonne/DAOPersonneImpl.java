@@ -79,20 +79,22 @@ public class DAOPersonneImpl {
             Utilisateur person = new Utilisateur();
             //Directeur
             if (nbre == 1) {
-                requete = "select nom,prenom,profils from personne p,directeur d where d.loginDir='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
+                requete = "select nom,prenom,profils,nomImgPers from personne p,directeur d where d.loginDir='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
                 st = con.createStatement();
                 ResultSet rs = st.executeQuery(requete);
                 while (rs.next()) {
                     person.setNom(rs.getString("nom"));
                     person.setPrenom(rs.getString("prenom"));
                     person.setProfils(rs.getString("profils"));
+                    person.setNomImgPers(rs.getString("nomImgPers"));
+                    System.out.println("Img "+rs.getString("nomImgPers"));
                     System.out.println("profil " + rs.getString("profils"));
                 }
             }
 
             //Surveillant
             if (nbre == 2) {
-                requete = "select nom,prenom,profils from personne p,surveillant d where d.loginSurv='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
+                requete = "select nom,prenom,profils,nomImgPers from personne p,surveillant d where d.loginSurv='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
                 st = con.createStatement();
                 ResultSet rs = st.executeQuery(requete);
                 while (rs.next()) {
@@ -105,13 +107,14 @@ public class DAOPersonneImpl {
 
             //Professeur
             if (nbre == 3) {
-                requete = "select nom,prenom,profils from personne p,professeur d where d.loginProf='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
+                requete = "select nom,prenom,profils,nomImgPers from personne p,professeur d where d.loginProf='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
                 st = con.createStatement();
                 ResultSet rs = st.executeQuery(requete);
                 while (rs.next()) {
                     person.setNom(rs.getString("nom"));
                     person.setPrenom(rs.getString("prenom"));
                     person.setProfils(rs.getString("profils"));
+                    person.setNomImgPers(rs.getString("nomImgPers"));
                     System.out.println(rs.getString("profils"));
                 }
             }

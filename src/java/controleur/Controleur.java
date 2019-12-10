@@ -5,6 +5,7 @@
  */
 package controleur;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,13 +16,16 @@ import java.util.List;
 import java.util.Locale;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import model.Arabe;
 import model.DAOFactory;
 import model.Eleve;
+import model.GenererRef;
 import model.ListEleve;
 import model.Parent;
 import model.Reclamation;
@@ -35,6 +39,10 @@ import modelPersonne.DAOProfImpl;
  *
  * @author ibrah
  */
+
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 20)
 public class Controleur extends HttpServlet {
 
     /**
@@ -65,6 +73,9 @@ public class Controleur extends HttpServlet {
     public ArrayList<Eleve> listeEleve;
     public ArrayList<Reclamation> reclamation;
     public ArrayList<Eleve> rechercheParElev;
+    
+    
+    private final String RepDestinationImg = "D:\\Personnel\\7Tup\\Projet_7Tup\\Projet Franco Arabe\\ecoleArabe\\web\\ImageUser";
 
     @Override
     public void init() throws ServletException {
@@ -139,6 +150,7 @@ public class Controleur extends HttpServlet {
                     session.setAttribute("prenom", p.getPrenom());
                     session.setAttribute("nom", p.getNom());
                     session.setAttribute("profils", p.getProfils());
+                    session.setAttribute("nomImgPers", p.getNomImgPers());
                     i = 1;
                     rd = request.getRequestDispatcher("directeur/accueilDirecteur.jsp");
                 }
@@ -151,7 +163,8 @@ public class Controleur extends HttpServlet {
                     session.setAttribute("motDePasse", motDePasse);
                     session.setAttribute("prenom", p.getPrenom());
                     session.setAttribute("nom", p.getNom());
-                    session.setAttribute("profils", p.getProfils());
+                    session.setAttribute("profils", p.getProfils());                    
+                    session.setAttribute("nomImgPers", p.getNomImgPers());
                     i = 1;
                     rd = request.getRequestDispatcher("surveillant/accueilSurveillant.jsp");
                 }
@@ -165,11 +178,12 @@ public class Controleur extends HttpServlet {
                     session.setAttribute("prenom", p.getPrenom());
                     session.setAttribute("nom", p.getNom());
                     session.setAttribute("profils", p.getProfils());
+                    session.setAttribute("nomImgPers", p.getNomImgPers());
                     i = 1;
                     rd = request.getRequestDispatcher("professeur/acceuilProf.jsp");
                 }
             }
-            if ((nbre == 0) && (i == 0)) {
+            if ((nbre == 0) || (i == 0)) {
                 String message = "Login et/ou mot de passe incorrect";
                 request.setAttribute("mess", message);
                 rd = request.getRequestDispatcher("connexion/login.jsp");
@@ -492,6 +506,9 @@ public class Controleur extends HttpServlet {
             rd = request.getRequestDispatcher("professeur/Compte.jsp");
         } else if (action.equals("modifCompte")) {
             String loginProf = request.getParameter("login");
+            String prenom = request.getParameter("prenom");
+            String nom = request.getParameter("nom");
+            String adresse = request.getParameter("adresse");
             String ancienMdp = request.getParameter("ancienMdp");
             String nouveauMdp = request.getParameter("nouveauMdp");
             String confirmerMdp = request.getParameter("confirmerMdp");
@@ -499,7 +516,7 @@ public class Controleur extends HttpServlet {
             if (nouveauMdp.equals(confirmerMdp)) {
                 int i = daoEleve.compte2(ancienMdp);
                 if (i == 0) {
-                    daoEleve.modifierCompte(loginProf, nouveauMdp, idPersonne);
+                    daoEleve.modifierCompte(loginProf, nouveauMdp, idPersonne,prenom, nom, adresse);
                     String mes = "Modification effectuée avec succès";
                     request.setAttribute("message", mes);
                     request.setAttribute("compte", compte);
@@ -517,7 +534,42 @@ public class Controleur extends HttpServlet {
                 rd = request.getRequestDispatcher("professeur/Compte.jsp");
             }
 
-        } //***********************************************Fin Compte Prof************************************************************************ 
+        } ///////////////////////////////Changer Image Utilisateur/////////////////////
+        else if (action.equals("photoProfil")) {
+            GenererRef ref = new GenererRef();
+            Part partImg1 = request.getPart("nomImage");
+            System.out.println("Taille "+partImg1.getSize());
+            String idPersonne = request.getParameter("idPersonne");
+            String image1 = "";
+            String cheminImg = RepDestinationImg + File.separator;
+            image1 = nomFichier(partImg1);
+            String chemin = cheminImg + image1;
+            int position = chemin.indexOf(".");
+            String extension = chemin.substring(position + 1);
+            if (extension.equalsIgnoreCase("png")
+                    || extension.equalsIgnoreCase("jpg")
+                    || extension.equalsIgnoreCase("jpeg")
+                    || extension.equalsIgnoreCase("gif")) {
+                String reference = ref.genererRef();
+                File f = new File(cheminImg + reference + image1);
+                //boolean result = true;                
+                boolean result = daoEleve.ajouterImageCompte(idPersonne, reference + image1);
+                partImg1.write(cheminImg + reference + image1);
+                if (result) {
+                    String message = "image modifier avec succes";
+                    request.setAttribute("msg1", message);
+                    rd = request.getRequestDispatcher("professeur/acceuilProf.jsp");
+                }
+            } else {
+                String message = "erreur extension";
+                request.setAttribute("msg", message);
+                //session.setAttribute("compte", compte);
+                rd = request.getRequestDispatcher("professeur/Compte.jsp");
+            }
+
+        }
+        
+        //***********************************************Fin Compte Prof************************************************************************ 
         //***********************************************Réclamation************************************************************************
         else if (action.equals("afficheMessage")) {
             String loginProf = request.getParameter("login");
@@ -637,4 +689,14 @@ public class Controleur extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private String nomFichier(Part part) {
+        String contenu = part.getHeader("content-disposition");
+        String[] items = contenu.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+            }
+        }
+        return "";
+    }
 }
