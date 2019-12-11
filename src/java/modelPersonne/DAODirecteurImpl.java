@@ -332,21 +332,119 @@ public class DAODirecteurImpl {
 
     }
 
-    public void changePasswdDir(String login, String passwd) {
+    public void changePasswdDir(String idPersonne, String passwd,String prenom,String nom,String adresse) {
 
         try {
             con = daoFactory.getConnection();
             PreparedStatement pst;
-            String requete1 = "update directeur set motDePasse=? where loginDir=?";
+            PreparedStatement pst2;
+            String requete1 = "update directeur set motDePasse=? where idPersonne=?";
             pst = con.prepareStatement(requete1);
             pst.setString(1, passwd);
-            pst.setString(2, login);
+            pst.setString(2, idPersonne);
             int result = pst.executeUpdate();
+            if (result > 0) {
+                String requete2 = "update personne set prenom=? ,nom=?, adresse=? where idPersonne=?";
+                pst2 = con.prepareStatement(requete2);
+                pst2.setString(1, prenom);
+                pst2.setString(2, nom);
+                pst2.setString(3, adresse);
+                pst2.setString(4, idPersonne);
+                int result2 = pst2.executeUpdate();
+                if (result2 > 0) {
+                    System.out.println("update personne success");
+                }
+            }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DAODirecteurImpl.class
-                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
         }
+    }
+    
+    public void changePasswdSurv(String idPersonne, String passwd,String prenom,String nom,String adresse) {
+
+        try {
+            con = daoFactory.getConnection();
+            PreparedStatement pst;
+            PreparedStatement pst2;
+            String requete1 = "update surveillant set motDePasse=? where idPersonne=?";
+            pst = con.prepareStatement(requete1);
+            pst.setString(1, passwd);
+            pst.setString(2, idPersonne);
+            int result = pst.executeUpdate();
+            if (result > 0) {
+                String requete2 = "update personne set prenom=? ,nom=?, adresse=? where idPersonne=?";
+                pst2 = con.prepareStatement(requete2);
+                pst2.setString(1, prenom);
+                pst2.setString(2, nom);
+                pst2.setString(3, adresse);
+                pst2.setString(4, idPersonne);
+                int result2 = pst2.executeUpdate();
+                if (result2 > 0) {
+                    System.out.println("update personne success");
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
+    }
+    
+    public ArrayList<Utilisateur> compteDirecteur(String loginDir) {
+        Utilisateur uti = new Utilisateur();
+        ArrayList<Utilisateur> compteProf = new ArrayList<>();
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select p.idPersonne,prenom,nom,adresse,nomImgPers,loginDir,motDePasse from personne p,directeur d where d.loginDir='" + loginDir + "' and d.idPersonne=p.idPersonne";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                uti = new Utilisateur();
+                uti.setLogin(rs.getString("loginDir"));
+                uti.setMotDePasse(rs.getString("motDePasse"));
+                uti.setAdresse(rs.getString("adresse"));
+                uti.setIdPersonne(rs.getString("idPersonne"));
+                System.out.println("idPers Bd "+rs.getString("idPersonne"));
+                uti.setPrenom(rs.getString("prenom"));
+                uti.setNom(rs.getString("nom"));
+                uti.setAdresse(rs.getString("adresse"));
+                uti.setNomImgPers(rs.getString("nomImgPers"));
+                compteProf.add(uti);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return compteProf;
+    }
+
+    public ArrayList<Utilisateur> compteSurveillant(String loginSurv) {
+        Utilisateur uti = new Utilisateur();
+        ArrayList<Utilisateur> compteProf = new ArrayList<>();
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select p.idPersonne,prenom,nom,adresse,nomImgPers,loginSurv,motDePasse from personne p,surveillant d where d.loginSurv='" + loginSurv + "' and d.idPersonne=p.idPersonne";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                uti = new Utilisateur();
+                uti.setLogin(rs.getString("loginSurv"));
+                uti.setMotDePasse(rs.getString("motDePasse"));
+                uti.setAdresse(rs.getString("adresse"));
+                uti.setIdPersonne(rs.getString("idPersonne"));
+                uti.setPrenom(rs.getString("prenom"));
+                uti.setNom(rs.getString("nom"));
+                uti.setAdresse(rs.getString("adresse"));
+                uti.setNomImgPers(rs.getString("nomImgPers"));
+                compteProf.add(uti);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return compteProf;
     }
 
     public void changePasswdSurv(String login, String passwd) {

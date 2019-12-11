@@ -512,13 +512,13 @@ public class Controleur extends HttpServlet {
             String ancienMdp = request.getParameter("ancienMdp");
             String nouveauMdp = request.getParameter("nouveauMdp");
             String confirmerMdp = request.getParameter("confirmerMdp");
-            String idPersonne = request.getParameter("idPersonne");
+            int idPersonne = Integer.parseInt(request.getParameter("idPersonne"));
             if (nouveauMdp.equals(confirmerMdp)) {
                 int i = daoEleve.compte2(ancienMdp);
                 if (i == 0) {
                     daoEleve.modifierCompte(loginProf, nouveauMdp, idPersonne,prenom, nom, adresse);
                     String mes = "Modification effectuée avec succès";
-                    request.setAttribute("message", mes);
+                    request.setAttribute("mes", mes);
                     request.setAttribute("compte", compte);
                     rd = request.getRequestDispatcher("professeur/Compte.jsp");
                 } else {
@@ -563,7 +563,7 @@ public class Controleur extends HttpServlet {
             } else {
                 String message = "erreur extension";
                 request.setAttribute("msg", message);
-                //session.setAttribute("compte", compte);
+                request.setAttribute("compte", compte);
                 rd = request.getRequestDispatcher("professeur/Compte.jsp");
             }
 

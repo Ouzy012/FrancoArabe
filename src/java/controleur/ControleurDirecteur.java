@@ -5,6 +5,7 @@
  */
 package controleur;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,10 +17,12 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import model.Arabe;
 import model.Bulletin;
 import model.DAOFactory;
@@ -27,6 +30,7 @@ import modelPersonne.DAODirecteurImpl;
 import modelPersonne.DAOPersonneImpl;
 import modelPersonne.DAOProfImpl;
 import model.Eleve;
+import model.GenererRef;
 import model.Mensuel;
 import model.Parent;
 import modelTables.Personne;
@@ -40,6 +44,9 @@ import modelPersonne.DAOParentImpl;
  *
  * @author Moussa Joseph Sarr
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 20)
 public class ControleurDirecteur extends HttpServlet {
 
     /**
@@ -60,6 +67,7 @@ public class ControleurDirecteur extends HttpServlet {
     public Parent parent;
     public Professeur professeur;
     private DAOProfImpl daoProf;
+    public ArrayList<Utilisateur> compte;
     ArrayList<String> matieres;
     ArrayList<Professeur> profs;
     private DAOPersonneImpl daoPersonne;
@@ -69,6 +77,8 @@ public class ControleurDirecteur extends HttpServlet {
     ArrayList<String> matFrancais;
 
     Random rd1;
+
+    private final String RepDestinationImg = "D:\\Personnel\\7Tup\\Projet_7Tup\\Projet Franco Arabe\\ecoleArabe\\web\\ImageUser";
 
     @Override
     public void init() throws ServletException {
@@ -82,6 +92,7 @@ public class ControleurDirecteur extends HttpServlet {
         matieres = new ArrayList();
         matArabe = new ArrayList();
         matFrancais = new ArrayList();
+        compte = new ArrayList<>();
         profs = new ArrayList();
         eleves = new ArrayList();
         rechercheParElev = new ArrayList<>();
@@ -107,6 +118,13 @@ public class ControleurDirecteur extends HttpServlet {
         String en_tete = request.getHeader("referer");
         HttpSession session = request.getSession();
         classes = daoEleve.listerClasse();
+        String userProfils = (String) session.getAttribute("profils");
+        if (userProfils.equalsIgnoreCase("Directeur")) {
+            compte = daoDirecteur.compteDirecteur((String) session.getAttribute("log"));            
+        } else {
+            compte = daoDirecteur.compteSurveillant((String) session.getAttribute("log"));
+        }
+
         session.setAttribute("classes", classes);
         int id = 0;
         session.setAttribute("matArabe", matArabe);
@@ -956,6 +974,7 @@ public class ControleurDirecteur extends HttpServlet {
             rd = request.getRequestDispatcher("directeur/classes.jsp");
         } //ajouter en fin 
         else if (action.equals("compte")) {
+            request.setAttribute("compte", compte);
             rd = request.getRequestDispatcher("directeur/compte.jsp");
 
         } else if (action.equals("annee")) {
@@ -987,39 +1006,86 @@ public class ControleurDirecteur extends HttpServlet {
                 rd = request.getRequestDispatcher("directeur/annee.jsp");
             }
         } else if (action.equals("confirmPasswd")) {
-            String newpasswd = request.getParameter("newpasswd");
-            System.out.println("nouveau :" + newpasswd);
-            String oldpasswd = request.getParameter("oldpasswd");
-            System.out.println("ancien :" + oldpasswd);
-            String newpasswd1 = request.getParameter("newpasswd1");
-            System.out.println("nouveau :" + newpasswd1);
-            String oldpasswd1 = (String) session.getAttribute("motDePasse");
-            System.out.println("mot de passe :" + oldpasswd1);
-            String login = (String) session.getAttribute("log");
-
-            String profils = (String) session.getAttribute("profils");
-            System.out.println("login :" + profils);
-            if ((newpasswd.equals(newpasswd1)) && (oldpasswd.equals(oldpasswd1)) && (profils.equals("Directeur"))) {
-                daoDirecteur.changePasswdDir(login, newpasswd);
-                session.setAttribute("motDePasse", newpasswd);
-                String msg = "Mot de Passe modifiée avec succés";
-                request.setAttribute("mes", msg);
-                rd = request.getRequestDispatcher("directeur/compte.jsp");
-
-            } else if ((newpasswd.equals(newpasswd1)) && (oldpasswd.equals(oldpasswd1)) && (profils.equals("surveillant"))) {
-
-                daoDirecteur.changePasswdSurv(login, newpasswd);
-                session.setAttribute("motDePasse", newpasswd);
-                String msg = "Mot de Passe modifiée avec succés";
-                request.setAttribute("mes", msg);
-                rd = request.getRequestDispatcher("directeur/compte.jsp");
+            String prenom = request.getParameter("prenom");
+            String nom = request.getParameter("nom");
+            String adresse = request.getParameter("adresse");
+            String ancienMdp = request.getParameter("ancienMdp");
+            String nouveauMdp = request.getParameter("nouveauMdp");
+            String confirmerMdp = request.getParameter("confirmerMdp");
+            String idPersonne = request.getParameter("idPersonne");
+            if (nouveauMdp.equals(confirmerMdp)) {
+                if (userProfils.equalsIgnoreCase("surveillant")) {
+                    int i = daoEleve.compte4(ancienMdp);
+                    if (i == 0) {
+                        daoDirecteur.changePasswdSurv(idPersonne, nouveauMdp, prenom, nom, adresse);
+                        String msg = "Mot de Passe modifiée avec succés";
+                        request.setAttribute("mes", msg);
+                        request.setAttribute("compte", compte);
+                        rd = request.getRequestDispatcher("directeur/compte.jsp");
+                    } else {
+                        request.setAttribute("compte", compte);
+                        String msg = "échec de la modification";
+                        request.setAttribute("message", msg);
+                        rd = request.getRequestDispatcher("directeur/compte.jsp");
+                    }
+                } else {
+                    int i = daoEleve.compte3(ancienMdp);
+                    if (i == 0) {
+                        daoDirecteur.changePasswdDir(idPersonne, nouveauMdp, prenom, nom, adresse);
+                        String msg = "Mot de Passe modifiée avec succés";
+                        request.setAttribute("mes", msg);
+                        request.setAttribute("compte", compte);
+                        rd = request.getRequestDispatcher("directeur/compte.jsp");
+                    } else {
+                        request.setAttribute("compte", compte);
+                        String msg = "échec de la modification";
+                        request.setAttribute("message", msg);
+                        rd = request.getRequestDispatcher("directeur/compte.jsp");
+                    }
+                }
             } else {
-                String msg = "échec de la modification";
-                request.setAttribute("message", msg);
+                String mes = "Les mots de passes ne sont pas conformes";
+                request.setAttribute("message", mes);
+                request.setAttribute("compte", compte);
                 rd = request.getRequestDispatcher("directeur/compte.jsp");
             }
-        } /////////////////////////////////////////////////Recherche////////////////////////////////////
-        else if (action.equals("rechercher")) {
+        }///////////////////////////////Changer Image Utilisateur/////////////////////
+        else if (action.equals("photoProfil")) {
+            GenererRef ref = new GenererRef();
+            Part partImg1 = request.getPart("nomImage");
+            System.out.println("Taille " + partImg1.getSize());
+            String idPersonne = request.getParameter("idPersonne");
+            String image1 = "";
+            String cheminImg = RepDestinationImg + File.separator;
+            image1 = nomFichier(partImg1);
+            String chemin = cheminImg + image1;
+            int position = chemin.indexOf(".");
+            String extension = chemin.substring(position + 1);
+            if (extension.equalsIgnoreCase("png")
+                    || extension.equalsIgnoreCase("jpg")
+                    || extension.equalsIgnoreCase("jpeg")
+                    || extension.equalsIgnoreCase("gif")) {
+                String reference = ref.genererRef();
+                File f = new File(cheminImg + reference + image1);
+                //boolean result = true;                
+                boolean result = daoEleve.ajouterImageCompte(idPersonne, reference + image1);
+                partImg1.write(cheminImg + reference + image1);
+                if (result) {
+                    String message = "image modifier avec succes";
+                    request.setAttribute("msg1", message);
+                    request.setAttribute("compte", compte);
+                    rd = request.getRequestDispatcher("directeur/compte.jsp");
+                }
+            } else {
+                String message = "erreur extension";
+                request.setAttribute("msg", message);
+                request.setAttribute("compte", compte);
+                rd = request.getRequestDispatcher("professeur/Compte.jsp");
+            }
+
+            /////////////////////////////////////////////////Recherche////////////////////////////////////
+        } else if (action.equals(
+                "rechercher")) {
             String nom = request.getParameter("recherche");
             rechercheParElev = daoParent.rechercheEleveProf(nom);
 
@@ -1037,12 +1103,13 @@ public class ControleurDirecteur extends HttpServlet {
         }
         ////////////////////////////////////////////////Fin Recheerche///////////////////////////////
 
-        if (rd != null) {
+        if (rd
+                != null) {
             rd.forward(request, response);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -1081,4 +1148,14 @@ public class ControleurDirecteur extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private String nomFichier(Part part) {
+        String contenu = part.getHeader("content-disposition");
+        String[] items = contenu.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+            }
+        }
+        return "";
+    }
 }

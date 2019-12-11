@@ -29,7 +29,6 @@
     <div class="content">
         <div class="container-fluid">                
             <div class="row">                
-                <h1>${message}</h1>
                 <div class="col-md-8">
                     <div class="card">
                         <div class="header">
@@ -50,13 +49,13 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Prénom</label>
-                                                <input type="text" name="" class="form-control" placeholder="Prénom..." value="${i.prenom}" required>
+                                                <input type="text" name="prenom" class="form-control" placeholder="Prénom..." value="${i.prenom}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Nom</label>
-                                                <input type="text" name="" value="${i.nom}" class="form-control" placeholder="Nom..." required>
+                                                <input type="text" name="nom" value="${i.nom}" class="form-control" placeholder="Nom..." required>
                                             </div>
                                         </div>
                                     </div>
@@ -75,12 +74,23 @@
                                             </div>
                                         </div>
                                     </div>
+                                            <div class="row">
+                                                <div class="col-md-6"></div>
+                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Confirmer mot de passe</label>
+                                                <input type="password" name="confirmerMdp" class="form-control" placeholder="Confirmer votre mot de passe..." required/>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Addresse</label>
-                                                <input type="text" name="" value="${i.adresse}" class="form-control" placeholder="Votre Addresse" required/>
+                                                <input type="text" name="adresse" value="${i.adresse}" class="form-control" placeholder="Votre Addresse" required/>
                                             </div>
                                         </div>
                                     </div>             
@@ -158,7 +168,7 @@
     </div>                                                            
     <% } else {
     %>
-    <jsp:forward page="../vue/SeConnecter.jsp"/>
+    <jsp:forward page="../connexion/login.jsp"/>
     <% }%>
 </body>
 

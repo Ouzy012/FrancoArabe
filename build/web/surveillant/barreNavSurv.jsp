@@ -96,13 +96,13 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Bulletin</span></a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="ControleurDirecteur?action=compte">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Mon compte</span></a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="Controleur?action=deconnection">
                     <i class="fas fa-fw fa-table"></i>
@@ -176,7 +176,12 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">${prenom}&nbsp;${nom}</span>
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">${profils}</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                <c:if test="${nomImgPers ne null}">
+                                    <img class="img-profile rounded-circle" src="ImageUser/${nomImgPers}">
+                                </c:if>
+                                <c:if test="${nomImgPers eq null}">
+                                    <img class="img-profile rounded-circle" src="ImageUser/Avatar.png">
+                                </c:if>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

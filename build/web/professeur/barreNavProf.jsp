@@ -146,7 +146,12 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">${prenom}&nbsp;${nom}</span>
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">${profils}</span>
-                                    <img class="img-profile rounded-circle" src="ImageUser/${nomImgPers}">
+                                    <c:if test="${nomImgPers ne null}">
+                                        <img class="img-profile rounded-circle" src="ImageUser/${nomImgPers}">
+                                    </c:if>
+                                    <c:if test="${nomImgPers eq null}">
+                                        <img class="img-profile rounded-circle" src="ImageUser/Avatar.png">
+                                    </c:if>
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -173,7 +178,7 @@
 
                     <% } else {
                     %>
-                    <jsp:forward page="../vue/SeConnecter.jsp"/>
+                    <jsp:forward page="../connexion/login.jsp"/>
                     <% }%>
 
                     </body>

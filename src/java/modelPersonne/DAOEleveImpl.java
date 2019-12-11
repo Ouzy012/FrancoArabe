@@ -290,24 +290,26 @@ public class DAOEleveImpl {
         return compteProf;
     }
 
-    public void modifierCompte(String login, String ancienMdp, String idPersonne, String prenom, String nom, String adresse) {
+    public void modifierCompte(String login, String ancienMdp, int idPersonne, String prenom, String nom, String adresse) {
         Connection con;
         Statement st;
+        Statement st1;
         try {
             con = daoFactory.getConnection();
             String requete1 = "UPDATE  professeur SET  motDePasse ='" + ancienMdp + "'" + "WHERE  idPersonne='" + idPersonne + "'";
             st = con.createStatement();
             int rs1 = st.executeUpdate(requete1);
             if (rs1 > 0) {
-                String requete2 = "update personne set prenom='" + prenom + "' and nom='" + nom + "' and adresse='" + adresse + "' WHERE  idPersonne='" + idPersonne + "'";
-                int rs2 = st.executeUpdate(requete2);
+                String requete2 = "UPDATE  personne SET  prenom ='" + prenom + "'" + ", nom ='" + nom + "'" + ",adresse='" + adresse + "'" + "WHERE  idPersonne='" + idPersonne + "'";
+                st1 = con.createStatement();
+                int rs2 = st1.executeUpdate(requete2);
             }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public Boolean ajouterImageCompte(String idPersonne, String nomImgPers) {
         Connection con;
         Statement st;
@@ -384,7 +386,52 @@ public class DAOEleveImpl {
             return 1;
         }
     }
+    
+    public int compte3(String ancienMdp) {
+        String login = "null";
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select loginDir from directeur where motDePasse='" + ancienMdp + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                login = rs.getString("loginDir");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (!login.equals("null")) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 
+    public int compte4(String ancienMdp) {
+        String login = "null";
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select loginSurv from surveillant where motDePasse='" + ancienMdp + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                login = rs.getString("loginSurv");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (!login.equals("null")) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    
     public String reclamation(String nomClasse, String nomMatiere, String an) {
 
         String loginProf = "";

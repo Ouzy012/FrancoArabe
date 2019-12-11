@@ -275,6 +275,7 @@ public class DAOParentImpl {
             String requete1 = "UPDATE  parent SET  motDePasse ='" + nouveauMdp + "'" + "WHERE  loginParent='" + login + "'";
             st = con.createStatement();
             int rs1 = st.executeUpdate(requete1);
+            
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
