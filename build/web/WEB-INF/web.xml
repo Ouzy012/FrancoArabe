@@ -16,6 +16,10 @@
         <servlet-name>ControleurSurveillant</servlet-name>
         <servlet-class>controleur.ControleurSurveillant</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Connexion</servlet-name>
+        <servlet-class>controleur.Connexion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controleur</servlet-name>
         <url-pattern>/Controleur</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ControleurSurveillant</servlet-name>
         <url-pattern>/ControleurSurveillant</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Connexion</servlet-name>
+        <url-pattern>/Connexion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

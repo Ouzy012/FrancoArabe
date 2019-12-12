@@ -36,7 +36,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Bienvenue</h1>
                   </div>
-                  <form action="Controleur" method="Post" class="user">
+                  <form action="Connexion" method="Post" class="user">
                       <input type="hidden" name="action" value="authentifier">
                     <div class="form-group">
                         <input type="text" name="login" class="form-control form-control-user" placeholder="Entrer votre login...">

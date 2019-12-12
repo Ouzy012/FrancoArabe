@@ -136,71 +136,7 @@ public class Controleur extends HttpServlet {
             rd = request.getRequestDispatcher("connexion/login.jsp");
         } else if (action.equals("parent")) {
             rd = request.getRequestDispatcher("vue/parent/parent.jsp");
-        } else if (action.equals("authentifier")) {
-            login = request.getParameter("login");
-            String motDePasse = request.getParameter("motDePasse");
-            int nbre = daoPersonne.determinerProfil(login, motDePasse);
-            int i = 0;
-            if (nbre == 1) {
-                personnes = daoPersonne.listPersonne(nbre, login, motDePasse);
-
-                for (Utilisateur p : personnes) {
-                    session.setAttribute("log", login);
-                    session.setAttribute("motDePasse", motDePasse);
-                    session.setAttribute("prenom", p.getPrenom());
-                    session.setAttribute("nom", p.getNom());
-                    session.setAttribute("profils", p.getProfils());
-                    session.setAttribute("nomImgPers", p.getNomImgPers());
-                    i = 1;
-                    rd = request.getRequestDispatcher("directeur/accueilDirecteur.jsp");
-                }
-            }
-            if (nbre == 2) {
-                personnes = daoPersonne.listPersonne(nbre, login, motDePasse);
-
-                for (Utilisateur p : personnes) {
-                    session.setAttribute("log", login);
-                    session.setAttribute("motDePasse", motDePasse);
-                    session.setAttribute("prenom", p.getPrenom());
-                    session.setAttribute("nom", p.getNom());
-                    session.setAttribute("profils", p.getProfils());                    
-                    session.setAttribute("nomImgPers", p.getNomImgPers());
-                    i = 1;
-                    rd = request.getRequestDispatcher("surveillant/accueilSurveillant.jsp");
-                }
-            }
-            if (nbre == 3) {
-                personnes = daoPersonne.listPersonne(nbre, login, motDePasse);
-
-                for (Utilisateur p : personnes) {
-                    session.setAttribute("log", login);
-                    session.setAttribute("motDePasse", motDePasse);
-                    session.setAttribute("prenom", p.getPrenom());
-                    session.setAttribute("nom", p.getNom());
-                    session.setAttribute("profils", p.getProfils());
-                    session.setAttribute("nomImgPers", p.getNomImgPers());
-                    i = 1;
-                    rd = request.getRequestDispatcher("professeur/acceuilProf.jsp");
-                }
-            }
-            if ((nbre == 0) || (i == 0)) {
-                String message = "Login et/ou mot de passe incorrect";
-                request.setAttribute("mess", message);
-                rd = request.getRequestDispatcher("connexion/login.jsp");
-            }
-
-                //Eleve/////////
-            //                if ((p.getProfils().equalsIgnoreCase("eleve")) && (login.equals(p.getLogin())) && (motDePasse.equals(p.getMotDePasse()))) {
-//                    session.setAttribute("log", login);
-//                    session.setAttribute("motDePasse", motDePasse);
-//                    session.setAttribute("prenom", p.getPrenom());
-//                    session.setAttribute("nom", p.getNom());
-//                    i = 1;
-//                    rd = request.getRequestDispatcher("acceuilEleve.jsp");
-            
-            
-            //***********************************************Ajouter note Eleve************************************************************************  
-        } else if (action.equals("ajoutNote")) {
+        }  else if (action.equals("ajoutNote")) {
             String loginProf = request.getParameter("login");
             listMatiere = daoEleve.selectMatiere(loginProf);
             listClasse = daoEleve.selectClasse(loginProf);

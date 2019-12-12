@@ -47,29 +47,26 @@ public class DAOPersonneImpl {
                     nbre = 2;
                     isTrue = true;
                     System.out.println(isTrue);
-                }else{
+                } else {
                     requete = "select idPersonne from professeur where loginProf='" + login + "' and motDePasse='" + motDePasse + "'";
                     ResultSet rs2 = st.executeQuery(requete);
                     if (rs2.next() == true) {
                         nbre = 3;
                         isTrue = true;
                         System.out.println(isTrue);
-                    }else{
+                    } else {
                         nbre = 0;
                         isTrue = false;
                     }
                 }
             }
-            }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-            return nbre;
-        }
-    
+        return nbre;
+    }
 
-    
-
-    public ArrayList<Utilisateur> listPersonne(int nbre, String login, String motDePasse) {
+    public ArrayList<Utilisateur> listPersonne(String login, String motDePasse) {
         String requete = null;
         ArrayList<Utilisateur> listPerson = new ArrayList();
         Connection con;
@@ -78,45 +75,16 @@ public class DAOPersonneImpl {
             con = daoFactory.getConnection();
             Utilisateur person = new Utilisateur();
             //Directeur
-            if (nbre == 1) {
-                requete = "select nom,prenom,profils,nomImgPers from personne p,directeur d where d.loginDir='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
-                st = con.createStatement();
-                ResultSet rs = st.executeQuery(requete);
-                while (rs.next()) {
-                    person.setNom(rs.getString("nom"));
-                    person.setPrenom(rs.getString("prenom"));
-                    person.setProfils(rs.getString("profils"));
-                    person.setNomImgPers(rs.getString("nomImgPers"));
-                    System.out.println("Img "+rs.getString("nomImgPers"));
-                    System.out.println("profil " + rs.getString("profils"));
-                }
-            }
-
-            //Surveillant
-            if (nbre == 2) {
-                requete = "select nom,prenom,profils,nomImgPers from personne p,surveillant d where d.loginSurv='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
-                st = con.createStatement();
-                ResultSet rs = st.executeQuery(requete);
-                while (rs.next()) {
-                    person.setNom(rs.getString("nom"));
-                    person.setPrenom(rs.getString("prenom"));
-                    person.setProfils(rs.getString("profils"));
-                    System.out.println(rs.getString("profils"));
-                }
-            }
-
-            //Professeur
-            if (nbre == 3) {
-                requete = "select nom,prenom,profils,nomImgPers from personne p,professeur d where d.loginProf='" + login + "' and d.motDePasse='" + motDePasse + "' and d.idPersonne=p.idPersonne";
-                st = con.createStatement();
-                ResultSet rs = st.executeQuery(requete);
-                while (rs.next()) {
-                    person.setNom(rs.getString("nom"));
-                    person.setPrenom(rs.getString("prenom"));
-                    person.setProfils(rs.getString("profils"));
-                    person.setNomImgPers(rs.getString("nomImgPers"));
-                    System.out.println(rs.getString("profils"));
-                }
+            requete = "select nom,prenom,profils,nomImgPers,etatPers from personne where login='" + login + "' and motDePasse='" + motDePasse + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                person.setNom(rs.getString("nom"));
+                person.setPrenom(rs.getString("prenom"));
+                person.setProfils(rs.getString("profils"));
+                person.setNomImgPers(rs.getString("nomImgPers"));
+                person.setEtatPers(rs.getInt("etatPers"));
+                System.out.println("etatPers "+rs.getInt("etatPers"));
             }
             listPerson.add(person);
         } catch (Exception e) {

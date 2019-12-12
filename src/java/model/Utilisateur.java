@@ -20,6 +20,18 @@ public class Utilisateur {
     private String telephone;
     private String profils;
     private String nomImgPers;
+    private int etatPers;
+
+    public int getEtatPers() {
+        return etatPers;
+    }
+
+    public void setEtatPers(int etatPers) {
+        this.etatPers = etatPers;
+    }
+    
+    
+    
 
     public String getNomImgPers() {
         return nomImgPers;
