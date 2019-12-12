@@ -12,20 +12,33 @@ package modelTables;
 public class Personne {
     
     private int idPersonne;
-    private String nom;
+    private String login;
     private String prenom;
+    private String nom;
     private String adresse;
     private String tel;
+    private String motDePasse;
+    private String profils;
+    private int etatPers;
     private String[] matiere; 
     private int idProf;
     private String idParent;
-    private String login;
-    private String motDePasse;
-    private String profils;
 
     public Personne() {
     }
 
+    public Personne(String login, String prenom, String nom, String adresse, String motDePasse, String profils, int etatPers) {
+        this.login = login;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.motDePasse = motDePasse;
+        this.profils = profils;
+        this.etatPers = etatPers;
+    }
+
+    
+    
     
     public Personne(int idPersonne,String nom, String prenom, String adresse, String tel) {
         this.idPersonne = idPersonne;
@@ -43,6 +56,17 @@ public class Personne {
         this.tel = tel;
         this.matiere = matiere;
     }
+
+    public int getEtatPers() {
+        return etatPers;
+    }
+
+    public void setEtatPers(int etatPers) {
+        this.etatPers = etatPers;
+    }
+    
+    
+    
     public String getProfils() {
         return profils;
     }

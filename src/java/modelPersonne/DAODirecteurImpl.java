@@ -18,8 +18,13 @@ import model.Bulletin;
 import model.Evaluation;
 import model.DAOFactory;
 import model.Eleve;
+import model.GestionParamUser;
+import model.Mensuel;
+import model.Parent;
+import model.Prof;
 import model.Professeur;
 import model.Utilisateur;
+import modelTables.Inscription;
 import modelTables.Personne;
 
 /**
@@ -36,6 +41,338 @@ public class DAODirecteurImpl {
 
     Connection con;
 
+    ////////Comptable
+    public int verifMontantInscription(String nomClasse) {
+        int reliquat = 0;
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select inscription from fichederenseignement where nomClasse='" + nomClasse + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                reliquat = rs.getInt("inscription");
+                System.out.println("reliquat " + reliquat);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return reliquat;
+    }
+
+    public String verifloginParent(String loginAncienPar) {
+        String loginPar = "";
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select Par_login from eleve where Par_login='" + loginAncienPar + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                loginPar = rs.getString("Par_login");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return loginPar;
+    }
+
+    public boolean inscrireEleve2(Personne pers, Inscription ins, Mensuel m, Parent par, Eleve elv) {
+        boolean resultat = false;
+        try {
+            con = daoFactory.getConnection();
+            PreparedStatement pst1;
+            PreparedStatement pst4;
+
+            String requete1 = "insert into personne (login,prenom,nom,adresse,motDePasse,etatPers,profils)"
+                    + " values(?,?,?,?,?,?,?)";
+            pst1 = con.prepareStatement(requete1);
+            pst1.setString(1, pers.getLogin());
+            pst1.setString(2, pers.getPrenom());
+            pst1.setString(3, pers.getNom());
+            pst1.setString(4, pers.getAdresse());
+            pst1.setString(5, pers.getMotDePasse());
+            pst1.setInt(6, pers.getEtatPers());
+            pst1.setString(7, pers.getProfils());
+            int result1 = pst1.executeUpdate();
+
+            if (result1 > 0) {
+                System.out.println("Enregistrement réussit de la table Personne");
+
+                String requete4 = "insert into inscription (idInscription,dateInscription,statutInscription,montant,reliquat)"
+                        + " values(?,?,?,?,?)";
+                pst4 = con.prepareStatement(requete4);
+                pst4.setInt(1, ins.getIdInscription());
+                pst4.setString(2, ins.getDateInscription());
+                pst4.setInt(3, ins.getStatus());
+                pst4.setInt(4, ins.getMontant());
+                pst4.setInt(5, ins.getReliquat());
+                int result4 = pst4.executeUpdate();
+                if (result4 > 0) {
+                    String requete5 = "insert into eleve (login,anneeScolaire,idInscription,nomClasse,"
+                            + "Par_login,dateNaissance,lieuNaissance,sexe)"
+                            + " values (?,?,?,?,?,?,?,?)";
+                    pst4 = con.prepareStatement(requete5);
+                    pst4.setString(1, pers.getLogin());
+                    pst4.setString(2, elv.getAnnee());
+                    pst4.setInt(3, ins.getIdInscription());
+                    pst4.setString(4, elv.getNomClasse());
+                    pst4.setString(5, par.getLoginParent());
+                    pst4.setString(6, elv.getDateNaissance());
+                    pst4.setString(7, elv.getLieuNaissance());
+                    pst4.setString(8, elv.getSexe());
+                    int result5 = pst4.executeUpdate();
+                    if (result5 > 0) {
+                        GestionParamUser gpu = new GestionParamUser();
+                        System.out.println("Enregistrement avec succes de la table Eleve");
+                        gpu.listerMois();
+                        for (Mensuel listerMoi : gpu.listerMois()) {
+                            String requete6 = "insert into mensuel (login,anneeScolaire,statutMensuel,dateMensuel,mois,"
+                                    + "montant,reliquat) values (?,?,?,?,?,?,?)";
+                            pst4 = con.prepareStatement(requete6);
+                            pst4.setString(1, pers.getLogin());
+                            pst4.setString(2, elv.getAnnee());
+                            pst4.setInt(3, m.getStatut());
+                            pst4.setString(4, m.getDateMensuel());
+                            pst4.setString(5, listerMoi.getMois());
+                            pst4.setInt(6, m.getMontant());
+                            pst4.setInt(7, m.getReliquat());
+                            int result6 = pst4.executeUpdate();
+                            if (result6 > 0) {
+                                System.out.println("Enregistrement avec success de la table mensuel");
+                            } else {
+                                System.out.println("Erreur d'enregistrement de la table mensuel");
+                            }
+                        }
+                    } else {
+                        System.out.println("Erreur d'enregistrement de la table Eleve");
+                    }
+                    resultat = true;
+                }
+            } else {
+                resultat = false;
+                System.out.println("Erreur d'enregistrement table Personne");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return resultat;
+    }
+
+    public boolean inscrireEleve(Personne pers, Inscription ins, Mensuel m, Parent par, Eleve elv) {
+        boolean resultat = false;
+        try {
+            con = daoFactory.getConnection();
+            PreparedStatement pst1;
+            PreparedStatement pst2;
+            PreparedStatement pst3;
+            PreparedStatement pst4;
+
+            String requete1 = "insert into personne (login,prenom,nom,adresse,motDePasse,etatPers,profils)"
+                    + " values(?,?,?,?,?,?,?)";
+            pst1 = con.prepareStatement(requete1);
+            pst1.setString(1, pers.getLogin());
+            pst1.setString(2, pers.getPrenom());
+            pst1.setString(3, pers.getNom());
+            pst1.setString(4, pers.getAdresse());
+            pst1.setString(5, pers.getMotDePasse());
+            pst1.setInt(6, pers.getEtatPers());
+            pst1.setString(7, pers.getProfils());
+            int result1 = pst1.executeUpdate();
+
+            if (result1 > 0) {
+                System.out.println("Enregistrement réussit de la table Personne");
+                String requete2 = "insert into personne (login,prenom,nom,adresse,telephone,motDePasse,etatPers,profils)"
+                        + " values(?,?,?,?,?,?,?,?)";
+                pst2 = con.prepareStatement(requete2);
+                pst2.setString(1, par.getLoginParent());
+                pst2.setString(2, par.getPrenom());
+                pst2.setString(3, par.getNom());
+                pst2.setString(4, pers.getAdresse());
+                pst2.setString(5, par.getTel());
+                pst2.setString(6, par.getMotDePasse());
+                pst2.setInt(7, par.getEtatPers());
+                pst2.setString(8, par.getProfils());
+                int result2 = pst2.executeUpdate();
+                if (result2 > 0) {
+                    System.out.println("Parent ajouter avec success");
+                    String requete3 = "insert into parent (login,email) values (?,?)";
+                    pst3 = con.prepareStatement(requete3);
+                    pst3.setString(1, par.getLoginParent());
+                    pst3.setString(2, par.getEmail());
+                    int result3 = pst3.executeUpdate();
+                    if (result3 > 0) {
+                        System.out.println("Enregistrement réussit table Parent");
+                        String requete4 = "insert into inscription (idInscription,dateInscription,statutInscription,montant,reliquat)"
+                                + " values(?,?,?,?,?)";
+                        pst4 = con.prepareStatement(requete4);
+                        pst4.setInt(1, ins.getIdInscription());
+                        pst4.setString(2, ins.getDateInscription());
+                        pst4.setInt(3, ins.getStatus());
+                        pst4.setInt(4, ins.getMontant());
+                        pst4.setInt(5, ins.getReliquat());
+                        int result4 = pst4.executeUpdate();
+                        if (result4 > 0) {
+                            System.out.println("enregistrement table inscription reussit");
+                            String requete5 = "insert into eleve (login,anneeScolaire,idInscription,nomClasse,"
+                                    + "Par_login,dateNaissance,lieuNaissance,sexe)"
+                                    + " values (?,?,?,?,?,?,?,?)";
+                            pst4 = con.prepareStatement(requete5);
+                            pst4.setString(1, pers.getLogin());
+                            pst4.setString(2, elv.getAnnee());
+                            pst4.setInt(3, ins.getIdInscription());
+                            pst4.setString(4, elv.getNomClasse());
+                            pst4.setString(5, par.getLoginParent());
+                            pst4.setString(6, elv.getDateNaissance());
+                            pst4.setString(7, elv.getLieuNaissance());
+                            pst4.setString(8, elv.getSexe());
+                            int result5 = pst4.executeUpdate();
+                            if (result5 > 0) {
+                                GestionParamUser gpu = new GestionParamUser();
+                                System.out.println("Enregistrement avec succes de la table Eleve");
+                                gpu.listerMois();
+                                for (Mensuel listerMoi : gpu.listerMois()) {
+                                    String requete6 = "insert into mensuel (login,anneeScolaire,statutMensuel,dateMensuel,mois,"
+                                            + "montant,reliquat) values (?,?,?,?,?,?,?)";
+                                    pst4 = con.prepareStatement(requete6);
+                                    pst4.setString(1, pers.getLogin());
+                                    pst4.setString(2, elv.getAnnee());
+                                    pst4.setInt(3, m.getStatut());
+                                    pst4.setString(4, m.getDateMensuel());
+                                    pst4.setString(5, listerMoi.getMois());
+                                    pst4.setInt(6, m.getMontant());
+                                    pst4.setInt(7, m.getReliquat());
+                                    int result6 = pst4.executeUpdate();
+                                    if (result6 > 0) {
+                                        System.out.println("Enregistrement avec success de la table mensuel");
+                                    } else {
+                                        System.out.println("Erreur d'enregistrement de la table mensuel");
+                                    }
+                                }
+                            } else {
+                                System.out.println("Erreur d'enregistrement de la table Eleve");
+                            }
+
+                        }
+                    } else {
+                        System.out.println("Erreur enregistrement table Parent");
+                    }
+
+                } else {
+                    System.out.println("Erreur d'ajout du parent");
+                }
+                resultat = true;
+            } else {
+                resultat = false;
+                System.out.println("Erreur d'enregistrement table Personne");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return resultat;
+    }
+
+    public ArrayList<Eleve> listerEleveClasse(String classe, String annee) {
+        ArrayList<Eleve> listEleve = new ArrayList<>();
+        Connection con;
+        Statement st;
+        Eleve eleve;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select elv.login,prenom,nom,dateNaissance,lieuNaissance FROM eleve elv,personne pers where elv.login=pers.login and nomClasse='" + classe + "' and anneeScolaire='" + annee + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                eleve = new Eleve();
+                eleve.setNom(rs.getString("nom"));
+                eleve.setPrenom(rs.getString("prenom"));
+                eleve.setDateNaissance(rs.getString("dateNaissance"));
+                eleve.setLieuNaissance(rs.getString("lieuNaissance"));
+                eleve.setLogin(rs.getString("login"));
+                listEleve.add(eleve);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listEleve;
+    }
+
+     public int verifMensualite(String nomClasse) {
+        int reliquat = 0;
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select mensualite from fichederenseignement where nomClasse='" + nomClasse + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                reliquat = rs.getInt("mensualite");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return reliquat;
+    }
+
+     public ArrayList<Mensuel> listerMensualite(String login, String annee) {
+        ArrayList<Mensuel> listMois = new ArrayList<>();
+        Connection con;
+        Statement st;
+        Mensuel mensuel;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select mois,statutMensuel,reliquat FROM mensuel WHERE login='" + login + "' and anneeScolaire='" + annee + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                mensuel = new Mensuel();
+                mensuel.setMois(rs.getString("mois"));
+                mensuel.setStatutMensuel(rs.getString("statutMensuel"));
+                mensuel.setReliquat(rs.getInt("reliquat"));
+                listMois.add(mensuel);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listMois;
+    }
+
+     public Boolean validerMensualite(String login, String anneeScolaire, String statutMensuel, String dateMensuel,
+            String mois, int montant, int reliquat) {
+        Connection con;
+        Boolean resultat = false;
+        PreparedStatement pst;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "update mensuel set statutMensuel=?, dateMensuel=?,montant=?,reliquat=? where login=? and anneeScolaire=? and mois=?";
+            pst = con.prepareStatement(requete);
+            pst.setString(1, statutMensuel);
+            pst.setString(2, dateMensuel);
+            pst.setInt(3, montant);
+            pst.setInt(4, reliquat);
+            pst.setString(5, login);
+            pst.setString(6, anneeScolaire);
+            pst.setString(7, mois);
+            int rs = pst.executeUpdate();
+            if (rs > 0) {
+                resultat = true;
+                System.out.println("la requete est bien exécutée");
+            } else {
+                System.out.println("Erreur d'exécution");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return resultat;
+    }
+
+     
+    //Fin Comptable
     public ArrayList<Eleve> consulterNotes(String nomClasse, String nomMatiere, String semestre, String annee) {
 
         ArrayList<Eleve> eleves = new ArrayList();
@@ -332,7 +669,7 @@ public class DAODirecteurImpl {
 
     }
 
-    public void changePasswdDir(String idPersonne, String passwd,String prenom,String nom,String adresse) {
+    public void changePasswdDir(String idPersonne, String passwd, String prenom, String nom, String adresse) {
 
         try {
             con = daoFactory.getConnection();
@@ -360,8 +697,8 @@ public class DAODirecteurImpl {
             System.out.println(ex.getMessage());;
         }
     }
-    
-    public void changePasswdSurv(String idPersonne, String passwd,String prenom,String nom,String adresse) {
+
+    public void changePasswdSurv(String idPersonne, String passwd, String prenom, String nom, String adresse) {
 
         try {
             con = daoFactory.getConnection();
@@ -389,7 +726,7 @@ public class DAODirecteurImpl {
             System.out.println(ex.getMessage());;
         }
     }
-    
+
     public ArrayList<Utilisateur> compteDirecteur(String loginDir) {
         Utilisateur uti = new Utilisateur();
         ArrayList<Utilisateur> compteProf = new ArrayList<>();
@@ -406,7 +743,7 @@ public class DAODirecteurImpl {
                 uti.setMotDePasse(rs.getString("motDePasse"));
                 uti.setAdresse(rs.getString("adresse"));
                 uti.setIdPersonne(rs.getString("idPersonne"));
-                System.out.println("idPers Bd "+rs.getString("idPersonne"));
+                System.out.println("idPers Bd " + rs.getString("idPersonne"));
                 uti.setPrenom(rs.getString("prenom"));
                 uti.setNom(rs.getString("nom"));
                 uti.setAdresse(rs.getString("adresse"));
@@ -649,7 +986,6 @@ public class DAODirecteurImpl {
             pst1.setString(3, usr.getAdresse());
             pst1.setString(4, usr.getTelephone());
             pst1.setInt(5, Integer.parseInt(usr.getIdPersonne()));
-            
 
             int result = pst1.executeUpdate();
             if (result > 0) {
@@ -663,14 +999,14 @@ public class DAODirecteurImpl {
         }
         return resultat;
     }
-    
-     public boolean supprimerSurv(int idSurv) {
+
+    public boolean supprimerSurv(int idSurv) {
         boolean resultat = false;
 
         try {
             con = daoFactory.getConnection();
             PreparedStatement pst1;
-           
+
             String req = "delete from personne where idPersonne=?";
             pst1 = con.prepareStatement(req);
             pst1.setInt(1, idSurv);

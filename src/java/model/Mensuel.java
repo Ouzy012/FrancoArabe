@@ -13,13 +13,42 @@ public class Mensuel {
 
     private String loginElv;
     private String anneeScolaire;
-    private String statutMensuel;
+    private int statut;
+    private String dateMensuel;
     private String mois;
+    private int montant;
+    private int reliquat;
     private String nomClasse;
+    private String statutMensuel;
 
     public Mensuel() {
     }
 
+    public Mensuel(String loginElv, String anneeScolaire, int statut, String dateMensuel, String mois, int montant, int reliquat) {
+        this.loginElv = loginElv;
+        this.anneeScolaire = anneeScolaire;
+        this.statut = statut;
+        this.dateMensuel = dateMensuel;
+        this.mois = mois;
+        this.montant = montant;
+        this.reliquat = reliquat;
+    }
+
+    
+
+    
+
+    public int getStatut() {
+        return statut;
+    }
+
+    public void setStatut(int statut) {
+        this.statut = statut;
+    }
+    
+    
+
+    
     public Mensuel(String mois) {
         this.mois = mois;
     }
@@ -30,6 +59,31 @@ public class Mensuel {
         this.anneeScolaire = anneeScolaire;
         this.statutMensuel = statutMensuel;
         this.nomClasse = nomClasse;
+    }
+
+    public String getDateMensuel() {
+        return dateMensuel;
+    }
+
+    public void setDateMensuel(String dateMensuel) {
+        this.dateMensuel = dateMensuel;
+    }
+
+    
+    public int getMontant() {
+        return montant;
+    }
+
+    public void setMontant(int montant) {
+        this.montant = montant;
+    }
+
+    public int getReliquat() {
+        return reliquat;
+    }
+
+    public void setReliquat(int reliquat) {
+        this.reliquat = reliquat;
     }
 
    

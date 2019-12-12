@@ -59,7 +59,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="Comptable?action=mensualite">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Mensualité</span></a>
             </li>

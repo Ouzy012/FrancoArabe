@@ -6,16 +6,20 @@ package model;
  */
 public class Eleve implements Comparable<Eleve>{
 
+    private String login;
+    private String loginParent;
+    private String annee;
+    private int idInscription;
+    private String nomClasse;
+    private String dateNaissance;
+    private String lieuNaissance;
+    private String sexe;
+    private int validerInsc;
     private String matriculeEleve;
     private String nom;
     private String prenom;
-    private String nomClasse;
     private String adresse;
     private String niveau;
-    private String dateNaissance;
-    private String lieuNaissance;
-    private String loginParent;
-    private String login;
     private String motDePasse;
     private String matiere;
     private String classe;
@@ -24,7 +28,6 @@ public class Eleve implements Comparable<Eleve>{
     private String idEvaluation;
     private float composition;
     private String semestre;
-    private String annee;
     private float moyenne;
     private float moyCompo1FR;
     private float moyCompo2FR;
@@ -36,6 +39,20 @@ public class Eleve implements Comparable<Eleve>{
 
     public Eleve() {
     }
+    
+    //inscrire eleve
+
+    public Eleve(String login, String loginParent, String annee, int idInscription, String nomClasse, String dateNaissance, String lieuNaissance, String sexe) {
+        this.login = login;
+        this.loginParent = loginParent;
+        this.annee = annee;
+        this.idInscription = idInscription;
+        this.nomClasse = nomClasse;
+        this.dateNaissance = dateNaissance;
+        this.lieuNaissance = lieuNaissance;
+        this.sexe = sexe;
+    }
+    
 
     public Eleve(String nomClasse, String nom, String prenom, String adresse, String dateNaissance, String lieuNaissance, String annee, String login, String motDePasse) {
         this.nom = nom;
@@ -76,6 +93,33 @@ public class Eleve implements Comparable<Eleve>{
         this.adresse = adresse;
         this.tel = tel;
     }
+
+    public int getValiderInsc() {
+        return validerInsc;
+    }
+
+    public void setValiderInsc(int validerInsc) {
+        this.validerInsc = validerInsc;
+    }
+
+    
+    public int getIdInscription() {
+        return idInscription;
+    }
+
+    public void setIdInscription(int idInscription) {
+        this.idInscription = idInscription;
+    }
+
+    
+    public String getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(String sexe) {
+        this.sexe = sexe;
+    }
+    
 
     public String getNom() {
         return nom;

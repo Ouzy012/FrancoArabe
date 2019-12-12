@@ -46,13 +46,13 @@
                 <div class="row">                
                     <div class="col-md-12">                        
                             <div class="header">
-                                <h4 class="title">Inscription élève</h4>
+                                <h4 class="title" style="text-align: center;">Inscription élève</h4>
                             </div>
                         <!--<div class="card">-->
                             <div class="content">
                                 <form action="Comptable" method="Post">
                                     <input type="hidden" name="action" value="valider-inscription" />
-                                    <h5>Information de l'élève</h5>
+                                    <h5>Informations de l'élève</h5>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -70,7 +70,7 @@
                                             <div class="form-group">
                                                 <label for="sexe">Sexe</label>
                                                 <select class="form-control" name="sexe">
-                                                    <option value="Garçon">Garçon</option>
+                                                    <option value="Garcon">Garçon</option>
                                                     <option value="Fille">Fille</option>
                                                 </select>
                                             </div>
