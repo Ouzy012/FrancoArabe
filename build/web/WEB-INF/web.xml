@@ -20,6 +20,10 @@
         <servlet-name>Connexion</servlet-name>
         <servlet-class>controleur.Connexion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Comptable</servlet-name>
+        <servlet-class>controleur.Comptable</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controleur</servlet-name>
         <url-pattern>/Controleur</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>Connexion</servlet-name>
         <url-pattern>/Connexion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Comptable</servlet-name>
+        <url-pattern>/Comptable</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

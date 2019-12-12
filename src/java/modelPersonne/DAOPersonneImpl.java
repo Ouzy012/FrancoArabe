@@ -73,20 +73,21 @@ public class DAOPersonneImpl {
         Statement st;
         try {
             con = daoFactory.getConnection();
-            Utilisateur person = new Utilisateur();
-            //Directeur
+            Utilisateur person = new Utilisateur();            
             requete = "select nom,prenom,profils,nomImgPers,etatPers from personne where login='" + login + "' and motDePasse='" + motDePasse + "'";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
+                person = new Utilisateur();
                 person.setNom(rs.getString("nom"));
                 person.setPrenom(rs.getString("prenom"));
                 person.setProfils(rs.getString("profils"));
                 person.setNomImgPers(rs.getString("nomImgPers"));
                 person.setEtatPers(rs.getInt("etatPers"));
-                System.out.println("etatPers "+rs.getInt("etatPers"));
+                System.out.println(listPerson);
+                listPerson.add(person);
             }
-            listPerson.add(person);
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

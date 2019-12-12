@@ -62,9 +62,6 @@ public class Connexion extends HttpServlet {
     public ArrayList<String> listAnnee2;
     public ArrayList<String> listClasse2;
     public ArrayList<Utilisateur> compte;
-    private DAOEleveImpl daoEleve;
-    private DAOProfImpl daoProf;
-    private DAOParentImpl daoParent;
     public ArrayList<Parent> listParent;
     public ArrayList<Eleve> listeEleve;
     public ArrayList<Reclamation> reclamation;
@@ -75,9 +72,6 @@ public class Connexion extends HttpServlet {
         DAOFactory daoFactory = DAOFactory.getInstance();
         this.daoPersonne = daoFactory.getDAOPersonne();
         personnes = new ArrayList();
-        this.daoEleve = daoFactory.getDAOEleve();
-        this.daoProf = daoFactory.getDAOProf();
-        this.daoParent = daoFactory.getDAOParent();
         eleve2 = new ArrayList();
         eleve3 = new ArrayList();
         eleve4 = new ArrayList();
@@ -130,80 +124,81 @@ public class Connexion extends HttpServlet {
             String motDePasse = request.getParameter("motDePasse");
             int i = 0;
             personnes = daoPersonne.listPersonne(login, motDePasse);
-            System.out.println("personnes "+personnes.isEmpty());
-            if (personnes.isEmpty() == true) {
-                i = 1;
+            System.out.println("log " + login);
+            System.out.println("pass " + motDePasse);
+            if (personnes.isEmpty()) {
+                i = 0;
+                String message = "Login et/ou mot de passe incorrect";
+                request.setAttribute("mess", message);
+                rd = request.getRequestDispatcher("connexion/login.jsp");
+            } else {
                 for (Utilisateur p : personnes) {
+                    System.out.println("etat pers " + p.getEtatPers());
                     session.setAttribute("log", login);
                     session.setAttribute("prenom", p.getPrenom());
                     session.setAttribute("nom", p.getNom());
                     session.setAttribute("profils", p.getProfils());
                     session.setAttribute("nomImgPers", p.getNomImgPers());
-                    if (p.getProfils().equals("Directeur") && p.getEtatPers() == 1) {                        
-                        rd = request.getRequestDispatcher("directeur/accueilDirecteur.jsp");
-                    } else if (p.getProfils().equals("Surveillant") && p.getEtatPers() == 1) {
-                        rd = request.getRequestDispatcher("surveillant/accueilSurveillant.jsp");
-                    } else if (p.getProfils().equals("Comptable") && p.getEtatPers() == 1) {
-                        rd = request.getRequestDispatcher("comptable/accueilComptable.jsp");
-                    } else if (p.getProfils().equals("Professeur") && p.getEtatPers() == 1) {
-                        rd = request.getRequestDispatcher("professeur/acceuilProf.jsp");
+                    if (p.getEtatPers() == 1) {
+                        i = 1;
+                        if (p.getProfils().equals("Directeur")) {
+                            rd = request.getRequestDispatcher("directeur/accueilDirecteur.jsp");
+                        } else if (p.getProfils().equals("Surveillant")) {
+                            rd = request.getRequestDispatcher("surveillant/accueilSurveillant.jsp");
+                        } else if (p.getProfils().equals("Comptable")) {
+                            rd = request.getRequestDispatcher("comptable/accueilComptable.jsp");
+                        } else if (p.getProfils().equals("Professeur")) {
+                            rd = request.getRequestDispatcher("professeur/acceuilProf.jsp");
+                        }
                     }
                 }
-            } else {
-                i = 0;
-                String message = "Login et/ou mot de passe incorrect";
-                request.setAttribute("mess", message);
-                rd = request.getRequestDispatcher("connexion/login.jsp");
-            }
-        }
-
-            if (rd != null) {
-                rd.forward(request, response);
             }
 
         }
 
-        // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-        /**
-         * Handles the HTTP <code>GET</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doGet
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
+        if (rd != null) {
+            rd.forward(request, response);
         }
-
-        /**
-         * Handles the HTTP <code>POST</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doPost
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            processRequest(request, response);
-        }
-
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
-        @Override
-        public String getServletInfo
-        
-            () {
-        return "Short description";
-        }// </editor-fold>
 
     }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}

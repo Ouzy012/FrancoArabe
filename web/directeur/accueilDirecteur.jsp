@@ -4,9 +4,7 @@
     Author     : Ouzy NDIAYE
 --%>
 
-<!DOCTYPE html>
-<html>
-    <head>        
+       
         <title>Acceuil Directeur</title> 
     </head>
     <body>
