@@ -24,6 +24,10 @@
         <servlet-name>Comptable</servlet-name>
         <servlet-class>controleur.Comptable</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControleurParent</servlet-name>
+        <servlet-class>controleur.ControleurParent</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controleur</servlet-name>
         <url-pattern>/Controleur</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>Comptable</servlet-name>
         <url-pattern>/Comptable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControleurParent</servlet-name>
+        <url-pattern>/ControleurParent</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

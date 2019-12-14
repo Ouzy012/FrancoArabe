@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/professeur/barreNavProf.jsp</file>
-            <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/professeur/acceuilProf.jsp</file>
-            <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/src/java/controleur/Controleur.java</file>
-            <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/src/java/modelPersonne/DAOPersonneImpl.java</file>
-            <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/professeur/Compte.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/listeNote.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/barreNavParent.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/AccueilParent.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/src/java/modelPersonne/DAOParentImpl.java</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/src/java/controleur/ControleurParent.java</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/ListeEleve.jsp</file>
         </group>
     </open-files>
 </project-private>
