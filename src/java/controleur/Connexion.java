@@ -150,6 +150,9 @@ public class Connexion extends HttpServlet {
                         } else if (p.getProfils().equals("Professeur")) {
                             rd = request.getRequestDispatcher("professeur/acceuilProf.jsp");
                         }
+                        else if (p.getProfils().equals("Parent")) {
+                            rd = request.getRequestDispatcher("parent/AccueilParent.jsp");
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/directeur/barre_navDirector.jsp</file>
             <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/directeur/accueilEDT.jsp</file>
             <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/src/java/modelPersonne/DAODirecteurImpl.java</file>
@@ -10,6 +11,14 @@
             <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/src/java/controleur/EDT.java</file>
             <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/directeur/afficherEDT.jsp</file>
             <file>file:/D:/Personnel/7Tup/Projet_7Tup/Projet%20Franco%20Arabe/ecoleArabe/web/directeur/ajouterCours.jsp</file>
+=======
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/listeNote.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/barreNavParent.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/AccueilParent.jsp</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/src/java/modelPersonne/DAOParentImpl.java</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/src/java/controleur/ControleurParent.java</file>
+            <file>file:/Users/mac/Desktop/ProjetArabe/ecoleArabe/web/parent/ListeEleve.jsp</file>
+>>>>>>> 338561ae5f92582b87dfb1e1d74bad69309d24c8
         </group>
     </open-files>
 </project-private>

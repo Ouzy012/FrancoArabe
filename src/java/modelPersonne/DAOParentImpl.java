@@ -23,13 +23,14 @@ public class DAOParentImpl {
     public DAOParentImpl(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
+    //*********************************liste des eleves*******************************
     public ArrayList<Eleve> listerEleve(String loginParent){
         ArrayList<Eleve> eleve = new ArrayList<>();
         Connection con;
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requete = "select distinct loginEleve,nomClasse,prenom,nom,dateNaissance,lieuNaissance,adresse from eleve where loginParent='"+ loginParent +"'";
+            String requete = "select distinct eleve.login,nomClasse,prenom,nom from eleve,personne where Par_login='"+ loginParent +"' and eleve.login=personne.login";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
@@ -37,10 +38,7 @@ public class DAOParentImpl {
                 e.setNomClasse(rs.getString("nomClasse"));
                 e.setPrenom(rs.getString("prenom"));
                 e.setNom(rs.getString("nom"));
-                e.setDateNaissance(rs.getString("dateNaissance"));
-                e.setLieuNaissance(rs.getString("lieuNaissance"));
-                e.setAdresse(rs.getString("adresse"));
-                e.setLogin(rs.getString("loginEleve"));
+                e.setLogin(rs.getString("login"));
                 eleve.add(e);
             }
         } catch (Exception e) {
@@ -48,7 +46,34 @@ public class DAOParentImpl {
         }
         return eleve;
     }
+//*********************************liste des notes d'un eleve*******************************
+    public ArrayList<Eleve> eleveParent(String annee, String loginEleve) {
+        ArrayList<Eleve> elevePar = new ArrayList<>();
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete1 = "select noteComposition,nomMatiere,semestre from evaluation where anneeScolaire='" + annee + "'and login='" + loginEleve + "'";
+            st = con.createStatement();
+            ResultSet rs1 = st.executeQuery(requete1);
+            while (rs1.next()) {
+                Eleve eleve = new Eleve();
 
+                eleve.setSemestre(rs1.getString("semestre"));
+                eleve.setComposition(rs1.getFloat("noteComposition"));
+                eleve.setMatiere(rs1.getString("nomMatiere"));
+                eleve.setAnnee(annee);
+                elevePar.add(eleve);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return elevePar;
+    }
+    
+    
+    
+    
     public ArrayList<String> prenomEleve(String loginParent){
         ArrayList<String> prenomEleve = new ArrayList<>();
         Connection con;

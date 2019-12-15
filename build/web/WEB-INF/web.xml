@@ -25,8 +25,13 @@
         <servlet-class>controleur.Comptable</servlet-class>
     </servlet>
     <servlet>
+<<<<<<< HEAD
         <servlet-name>EDT</servlet-name>
         <servlet-class>controleur.EDT</servlet-class>
+=======
+        <servlet-name>ControleurParent</servlet-name>
+        <servlet-class>controleur.ControleurParent</servlet-class>
+>>>>>>> 338561ae5f92582b87dfb1e1d74bad69309d24c8
     </servlet>
     <servlet-mapping>
         <servlet-name>Controleur</servlet-name>
@@ -53,8 +58,13 @@
         <url-pattern>/Comptable</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+<<<<<<< HEAD
         <servlet-name>EDT</servlet-name>
         <url-pattern>/EDT</url-pattern>
+=======
+        <servlet-name>ControleurParent</servlet-name>
+        <url-pattern>/ControleurParent</url-pattern>
+>>>>>>> 338561ae5f92582b87dfb1e1d74bad69309d24c8
     </servlet-mapping>
     <session-config>
         <session-timeout>
