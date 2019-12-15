@@ -18,6 +18,7 @@ import model.Bulletin;
 import model.Evaluation;
 import model.DAOFactory;
 import model.Eleve;
+import model.GestionDate;
 import model.GestionParamUser;
 import model.Mensuel;
 import model.Parent;
@@ -300,7 +301,7 @@ public class DAODirecteurImpl {
         return listEleve;
     }
 
-     public int verifMensualite(String nomClasse) {
+    public int verifMensualite(String nomClasse) {
         int reliquat = 0;
         Connection con;
         Statement st;
@@ -318,14 +319,14 @@ public class DAODirecteurImpl {
         return reliquat;
     }
 
-     public ArrayList<Mensuel> listerMensualite(String login, String annee) {
+    public ArrayList<Mensuel> listerMensualite(String login, String annee) {
         ArrayList<Mensuel> listMois = new ArrayList<>();
         Connection con;
         Statement st;
         Mensuel mensuel;
         try {
             con = daoFactory.getConnection();
-            String requete = "select mois,statutMensuel,reliquat FROM mensuel WHERE login='" + login + "' and anneeScolaire='" + annee + "'";
+            String requete = "select mois,statutMensuel,reliquat FROM mensuel WHERE login='" + login + "' and anneeScolaire='" + annee + "' order by idMensuel";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
@@ -342,7 +343,7 @@ public class DAODirecteurImpl {
         return listMois;
     }
 
-     public Boolean validerMensualite(String login, String anneeScolaire, String statutMensuel, String dateMensuel,
+    public Boolean validerMensualite(String login, String anneeScolaire, String statutMensuel, String dateMensuel,
             String mois, int montant, int reliquat) {
         Connection con;
         Boolean resultat = false;
@@ -371,8 +372,173 @@ public class DAODirecteurImpl {
         return resultat;
     }
 
-     
+    public int verifMontantPayer(String login, String annee, String moisMensuel) {
+        int montant = 0;
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select montant from mensuel where login='" + login + "' and anneeScolaire='" + annee + "' and mois='" + moisMensuel + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                montant = rs.getInt("montant");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return montant;
+    }
+
+    public Boolean validerPayementReliquat(String login, String anneeScolaire, String statutMensuel, String dateMensuel,
+            String mois, int montant, int reliquat) {
+        Connection con;
+        Boolean resultat = false;
+        PreparedStatement pst;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "update mensuel set statutMensuel=?, dateMensuel=?,montant=?,reliquat=? where login=? and anneeScolaire=? and mois=?";
+            pst = con.prepareStatement(requete);
+            pst.setString(1, statutMensuel);
+            pst.setString(2, dateMensuel);
+            pst.setInt(3, montant);
+            pst.setInt(4, reliquat);
+            pst.setString(5, login);
+            pst.setString(6, anneeScolaire);
+            pst.setString(7, mois);
+            int rs = pst.executeUpdate();
+            if (rs > 0) {
+                resultat = true;
+                System.out.println("la requete est bien exécutée");
+            } else {
+                System.out.println("Erreur d'exécution");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return resultat;
+    }
+
     //Fin Comptable
+    /////EDT///////////
+    public boolean verifDisponibilite(String jour, String heure, String nomClasse) {
+        boolean listEleve = false;
+        GestionDate gd = new GestionDate();
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select jour,heureDeb FROM emploidutemps where nomClasse='" + nomClasse + "' and jour='" + jour + "' and heureDeb='" + heure + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                if (rs.getString("heureDeb") != null && rs.getString("jour") != null) {
+                    listEleve = true;
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return listEleve;
+    }
+
+    public ArrayList<String> listerSalleClasse() {
+        ArrayList<String> listEleve = new ArrayList<>();
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select nomSalle FROM salle";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                listEleve.add(rs.getString("nomSalle"));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listEleve;
+    }
+
+    public ArrayList<String> listerMatiereClasse(String classe) {
+        ArrayList<String> listEleve = new ArrayList<>();
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select nomMatiere FROM classeMatiere where nomClasse='" + classe + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                listEleve.add(rs.getString("nomMatiere"));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listEleve;
+    }
+
+    public ArrayList<Personne> listerProfClasse(String classe, String annee) {
+        ArrayList<Personne> listEleve = new ArrayList<>();
+        Personne personne;
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select login FROM profClasse where nomClasse='" + classe + "' and anneeScolaire='" + annee + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                String requete2 = "select nom from personne where login='" + rs.getString("login") + "'";
+                st = con.createStatement();
+                ResultSet rs1 = st.executeQuery(requete2);
+                while (rs1.next()) {
+                    personne = new Personne();
+                    personne.setLogin(rs.getString("login"));
+                    personne.setNom(rs1.getString("nom"));
+                    listEleve.add(personne);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listEleve;
+    }
+
+     public String[][] afficherEDT(String classe) {
+        String[][] listEleve = new String[4][5];
+        GestionDate gd = new GestionDate();
+        int l = 0;
+        int c = 0;
+        int cpt = 0;
+        Connection con;
+        Statement st;
+        try {
+            con = daoFactory.getConnection();
+            String requete = "select * FROM emploidutemps where nomClasse='" + classe + "'";
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                String requete2 = "select nom from personne where login ='" + rs.getString("login") + "'";
+                st = con.createStatement();
+                ResultSet rs1 = st.executeQuery(requete2);
+                while (rs1.next()) {
+                    c = gd.numeroJour(rs.getString("jour")); //Colonne
+                    l = gd.numeroHeure(rs.getString("heureDeb")); //Ligne
+                    listEleve[l][c] = rs.getString("nomMatiere") + "//---//" + rs1.getString("nom") + "//---//" + rs.getString("nomSalle");
+                    System.out.println("requete bien executer");
+                    System.out.println(rs.getString("nomSalle"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return listEleve;
+    }
+
+    ////Fin EDT/////////
     public ArrayList<Eleve> consulterNotes(String nomClasse, String nomMatiere, String semestre, String annee) {
 
         ArrayList<Eleve> eleves = new ArrayList();

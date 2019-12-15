@@ -5,7 +5,6 @@
 --%>
 
 
-<title>Directeur</title>
 </head>
 <body id="page-top">
     <%            if (session.getAttribute("log") != null) {
@@ -67,7 +66,7 @@
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Lister</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
                         <a class="collapse-item" href="ControleurDirecteur?action=formAffClass">Classe</a>
@@ -78,7 +77,16 @@
                     </div>
                 </div>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link" href="EDT?action=accueilEDT">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Créer EDT</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="EDT?action=afficherEDT">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Afficher EDT</span></a>
+            </li>                       
             <!-- Divider 
             <hr class="sidebar-divider">-->
 
@@ -92,13 +100,6 @@
                 <a class="nav-link" href="ControleurDirecteur?action=formNote">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Consulter notes</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="ControleurDirecteur?action=mensuel">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Mensualité</span></a>
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -191,7 +192,7 @@
                                 <c:if test="${nomImgPers eq null}">
                                     <img class="img-profile rounded-circle" src="ImageUser/Avatar.png">
                                 </c:if>
-                                    
+
 
                             </a>
                             <!-- Dropdown - User Information -->

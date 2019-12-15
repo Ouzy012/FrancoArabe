@@ -60,7 +60,6 @@ public class Comptable extends HttpServlet {
     public ArrayList<Utilisateur> compte;
     ArrayList<String> matieres;
     ArrayList<Professeur> profs;
-    private DAOPersonneImpl daoPersonne;
     public ArrayList<Eleve> rechercheParElev;
     ArrayList<String> matArabe;
     ArrayList<String> matFrancais;
@@ -70,7 +69,6 @@ public class Comptable extends HttpServlet {
         DAOFactory daoFactory = DAOFactory.getInstance();
         this.daoEleve = daoFactory.getDAOEleve();
         this.daoProf = daoFactory.getDAOProf();
-        this.daoPersonne = daoFactory.getDAOPersonne();
         this.daoDirecteur = daoFactory.getDAODirecteur();
         classes = new ArrayList();
         matieres = new ArrayList();
@@ -110,7 +108,10 @@ public class Comptable extends HttpServlet {
 
         if (action == null) {
             rd = request.getRequestDispatcher("comptable/accueilComptable.jsp");
-        } else if (action.equals("inscrireEleve")) {
+        }else if (action.equals("accueil")) {
+            rd = request.getRequestDispatcher("comptable/accueilComptable.jsp");
+        }
+        else if (action.equals("inscrireEleve")) {
             session.setAttribute("classes", classes);
             rd = request.getRequestDispatcher("comptable/inscrireEleve.jsp");
         } else if (action.equals("valider-inscription")) {
@@ -329,6 +330,51 @@ public class Comptable extends HttpServlet {
                     String msg = "erreur montant";
                     request.setAttribute("payer", "payer");
                     request.setAttribute("erreurPayement", msg);
+                    rd = request.getRequestDispatcher("comptable/validerMensualite.jsp");
+                }
+            }
+        }else if (action.equals("resteApayer")) {
+             String login = request.getParameter("login");
+            String nomClasse = request.getParameter("nomClasse");
+            String mensuel = request.getParameter("mois");
+            int montant = daoDirecteur.verifMontantPayer(login, anInscr, mensuel);
+            int reliquat = Integer.parseInt(request.getParameter("reliquat"));
+
+            session.setAttribute("login", login);
+            session.setAttribute("montant", montant);
+            session.setAttribute("nomClasse", nomClasse);
+            session.setAttribute("moisMensuel", mensuel);
+            session.setAttribute("montantReliquat", reliquat);
+            request.setAttribute("reliquat", "reliquat");
+            rd = request.getRequestDispatcher("comptable/validerMensualite.jsp");
+        }else if (action.equals("payerReliquat")) {
+            int montantRecu = Integer.parseInt(request.getParameter("montantRecu"));
+            int montant = Integer.parseInt(request.getParameter("montant"));
+            String login = request.getParameter("login");
+            String nomClasse = request.getParameter("nomClasse");
+            int montantReliquat = Integer.parseInt(request.getParameter("montantReliquat"));
+            String moisMensuel = request.getParameter("moisMensuel");
+
+            if (montantRecu > montantReliquat) {
+                String msgErrorReliquat = "erreur";
+                request.setAttribute("msgErrorReliquat", msgErrorReliquat);
+                request.setAttribute("reliquat", "reliquat");
+                rd = request.getRequestDispatcher("comptable/validerMensualite.jsp");
+            }
+            Boolean resultat = false;
+            if (montantRecu <= montantReliquat) {
+                int reliquat = montantReliquat - montantRecu;
+                int montantPayer = montant + montantRecu;
+                resultat = daoDirecteur.validerPayementReliquat(login, anInscr, "1", dateToday, moisMensuel, montantPayer, reliquat);
+                if (resultat) {
+                    String msg = "success";
+                    request.setAttribute("payementReussit", msg);                                        
+                    request.setAttribute("classes", classes);
+                    rd = request.getRequestDispatcher("comptable/mensualite.jsp");
+                } else {
+                    String msg = "erreur";
+                    request.setAttribute("erreurReliquat", msg);
+                    request.setAttribute("reliquat", "reliquat");
                     rd = request.getRequestDispatcher("comptable/validerMensualite.jsp");
                 }
             }

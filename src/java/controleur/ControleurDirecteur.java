@@ -158,7 +158,8 @@ public class ControleurDirecteur extends HttpServlet {
         } else if (en_tete == null) {
             session.invalidate();
             rd = request.getRequestDispatcher("vue/erreur.jsp");
-        } ////////////////////////////MENSUALITE//////////////////////////
+        }
+        ////////////////////////////MENSUALITE//////////////////////////
         else if (action.equals("mensuel")) {
             classes = daoEleve.listerClasse();
             request.setAttribute("classes", classes);

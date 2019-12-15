@@ -29,7 +29,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="Controleur?action=accueil">
+                <a class="nav-link" href="Comptable?action=accueil">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Accueil</span>
                 </a>
