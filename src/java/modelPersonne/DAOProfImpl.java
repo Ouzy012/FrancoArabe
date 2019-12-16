@@ -151,7 +151,8 @@ public class DAOProfImpl {
         }
         return matieres;
     }
-      public ArrayList<Arabe> listerMatArabe() {
+
+    public ArrayList<Arabe> listerMatArabe() {
 
         ArrayList<Arabe> matieres = new ArrayList();
         Statement st;
@@ -195,14 +196,14 @@ public class DAOProfImpl {
         return fr;
     }
 
-    public ArrayList<Professeur> listerProf() {
+    public ArrayList<Professeur> listerProf(String an) {
 
         ArrayList<Professeur> profs = new ArrayList();
         Statement st;
 
         try {
             con = daoFactory.getConnection();
-            String requete = "select p.idPersonne,nom,prenom,adresse,tel from personne p,professeur pf where p.idPersonne = pf.idpersonne";
+            String requete = "select p.login,nom,prenom,adresse,telephone from personne p,professeur pf where p.login = pf.login";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
 
@@ -211,10 +212,10 @@ public class DAOProfImpl {
                 ArrayList<String> tabM = new ArrayList();
                 ArrayList<String> tabC = new ArrayList();
 
-                Personne person = new Personne(rs.getInt(1), rs.getString("nom"), rs.getString("prenom"), rs.getString("adresse"), rs.getString("tel"));
+                Personne person = new Personne(rs.getInt(1), rs.getString("nom"), rs.getString("prenom"), rs.getString("adresse"), rs.getString("telephone"));
 
                 Statement st2;
-                String requeteC = "select nomClasse from profClasse where idpersonne=" + rs.getString(1);
+                String requeteC = "select nomClasse from profClasse where login='" + rs.getString(1) + "' and anneeScolaire='" + an + "'";
                 st2 = con.createStatement();
                 ResultSet rsc = st2.executeQuery(requeteC);
 
@@ -224,7 +225,7 @@ public class DAOProfImpl {
                 }
 
                 Statement st1;
-                String requeteM = "select nomMatiere from profmatiere where idpersonne=" + rs.getString(1);
+                String requeteM = "select nomMatiere from profmatiere where login=" + rs.getString(1);
                 st1 = con.createStatement();
                 ResultSet rsm = st1.executeQuery(requeteM);
                 while (rsm.next()) {
@@ -342,14 +343,14 @@ public class DAOProfImpl {
 
     }
 
-    public Utilisateur listerUnSurv(int idSurv) {
+    public Utilisateur listerUnSurv(String login) {
 
         Utilisateur usr = new Utilisateur();
         Statement st;
 
         try {
             con = daoFactory.getConnection();
-            String requete = "select nom,prenom,adresse,tel from personne where idPersonne = " + idSurv;
+            String requete = "select nom,prenom,adresse,telephone from personne where login = '" + login + "'";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
 
@@ -358,8 +359,8 @@ public class DAOProfImpl {
                 usr.setNom(rs.getString(1));
                 usr.setPrenom(rs.getString(2));
                 usr.setTelephone(rs.getString(4));
-                
-                usr.setIdPersonne(idSurv+"");
+
+                usr.setLogin(login);
             }
 
         } catch (Exception e) {
@@ -432,13 +433,13 @@ public class DAOProfImpl {
 
         try {
             con = daoFactory.getConnection();
-            String requete = "select p.idPersonne,nom,prenom,adresse,tel from personne p,surveillant sur where p.idPersonne = sur.idpersonne ";
+            String requete = "select p.login,nom,prenom,adresse,telephone from personne p,surveillant sur where p.login = sur.login ";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
 
             while (rs.next()) {
                 Utilisateur usr = new Utilisateur();
-                usr.setIdPersonne(rs.getString(1));
+                usr.setLogin(rs.getString(1));
                 usr.setAdresse(rs.getString(4));
                 usr.setNom(rs.getString(2));
                 usr.setPrenom(rs.getString(3));
@@ -450,17 +451,17 @@ public class DAOProfImpl {
         }
         return users;
     }
-    
+
     public String matiere(String nomMatiere) {
         String nom = "";
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requeteU = "select nomMatiere from matiere where nomMatiere='"+nomMatiere+"' or nomArabe='"+nomMatiere+"'";
+            String requeteU = "select nomMatiere from matiere where nomMatiere='" + nomMatiere + "' or nomArabe='" + nomMatiere + "'";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requeteU);
             if (rs.next()) {
-               nom = rs.getString("nomMatiere");
+                nom = rs.getString("nomMatiere");
             }
 
         } catch (Exception e) {

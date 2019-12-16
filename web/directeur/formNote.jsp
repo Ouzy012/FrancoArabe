@@ -7,7 +7,7 @@
 <%@page import="java.util.ArrayList"%>
 <html>
     <head>
-        <title>Note des élèves</title>
+        <title>${profils} | Note des élèves</title>
     </head>
 
     <%            if (session.getAttribute("log") != null) {
@@ -87,7 +87,7 @@
     </div>
     <% } else {
     %>
-    <jsp:forward page="../vue/SeConnecter.jsp"/>
+    <jsp:forward page="../connexion/login.jsp"/>
     <% }%> 
 
 

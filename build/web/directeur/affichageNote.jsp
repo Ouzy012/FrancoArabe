@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Afficher Notes</title>
+        <title>${profils} | Afficher notes</title>
     </head>
     <body>
 
@@ -26,15 +26,16 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
                     <c:if test="${empty eleves}">
-                        <div class="col-lg-3"></div>
-                        <div class="col-lg-6">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
                             <h3 class="btn-info" style="text-align: center;">
                                 Les notes de la classe ${nomClasse} ne sont pas disponible
                             </h3>
                         </div>
                     </c:if>
+            </div>
+            <div class="row">
                     <c:if test="${!empty eleves}">                        
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -97,10 +98,9 @@
                     </c:if>
                 </div>
             </div>
-        </div>
         <% } else {
         %>
-        <jsp:forward page="../vue/SeConnecter.jsp"/>
+        <jsp:forward page="../connexion/login.jsp"/>
         <% }%>  
 
 

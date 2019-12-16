@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Liste des matières</title>
+        <title>${profils} | Liste des matières</title>
     </head>
     <body>
         <%            if (session.getAttribute("log") != null) {
@@ -137,7 +137,7 @@
         </div>       
         <% } else {
         %>
-        <jsp:forward page="../vue/SeConnecter.jsp"/>
+        <jsp:forward page="../connexion/login.jsp"/>
         <% }%> 
     </body>
 </html>

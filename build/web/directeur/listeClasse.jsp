@@ -85,7 +85,7 @@
                 <div class="col-lg-12">
                     <c:if test="${empty eleves}">
                         <h2 style="text-align: center;" class="btn-warning">
-                            Aucun élève n'est enregistrer dans la classe ${nomCl} 
+                            Aucun élève n'est inscrit dans la classe ${nomCl} 
                         </h2>
                     </c:if>
                     <c:if test="${!empty eleves}">

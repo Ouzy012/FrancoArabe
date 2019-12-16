@@ -7,7 +7,7 @@
 
 <html>
     <head>
-        <title>Paramètre Compte</title>
+        <title>${profils} | Paramètres compte</title>
     </head>
     <body>
         <%            if (session.getAttribute("log") != null) {
@@ -50,14 +50,13 @@
                             <div class="content">
                                 <form method="POST" action="ControleurDirecteur">
                                     <input type="hidden" name="action" value="confirmPasswd">
-                                                                       
+                                    <input type="hidden" name="login" value="${log}"/>                    
                                     <c:forEach var="i" items="${compte}">  
-                                        <input type="hidden" name="idPersonne" value="${i.idPersonne}" />
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label>Login</label>
-                                                    <input type="text" name="login" value="${log}" class="form-control" disabled placeholder="Company">
+                                                    <input type="text" value="${i.login}" class="form-control" disabled placeholder="Company">
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -68,7 +67,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1">Nom</label>
+                                                    <label>Nom</label>
                                                     <input type="text" name="nom" value="${i.nom}" class="form-control" placeholder="Nom..." required>
                                                 </div>
                                             </div>

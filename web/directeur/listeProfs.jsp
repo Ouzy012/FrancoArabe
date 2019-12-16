@@ -47,7 +47,7 @@
                                                 <th>Prénom</th>
                                                 <th>Adresse</th>
                                                 <th>Téléphone</th>
-                                                    <c:if test="${profils eq 'surveillant'}">
+                                                    <c:if test="${profils eq 'Surveillant'}">
                                                     <th>Modifier</th>
                                                     </c:if>
                                                 <th>Détails</th>                      
@@ -59,7 +59,7 @@
                                                 <th>Prénom</th>
                                                 <th>Adresse</th>
                                                 <th>Téléphone</th>
-                                                    <c:if test="${profils eq 'surveillant'}">
+                                                    <c:if test="${profils eq 'Surveillant'}">
                                                     <th>Modifier</th>
                                                     </c:if>
                                                 <th>Détails</th> 
@@ -73,7 +73,7 @@
                                                     <td>${p.personne.adresse}</td>
                                                     <td>${p.personne.tel}</td>
 
-                                                    <c:if test="${profils eq 'surveillant'}">
+                                                    <c:if test="${profils eq 'Surveillant'}">
                                                         <td>
                                                             <!--<button class="btn btn-success">-->
                                                             <a href="ControleurDirecteur?action=modifierProf&&idProf=${p.personne.idPersonne}">
@@ -100,7 +100,7 @@
         </div>
         <% } else {
         %>
-        <jsp:forward page="../vue/SeConnecter.jsp"/>
+        <jsp:forward page="../connexion/login.jsp"/>
         <% }%>  
     </body>
 </html>

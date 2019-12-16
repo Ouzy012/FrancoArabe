@@ -94,23 +94,5 @@ public class DAOPersonneImpl {
         return listPerson;
     }
 
-    public int nbrePersonne() {
-        int nb = 0;
-        Connection con;
-        Statement st;
-        try {
-            con = daoFactory.getConnection();
-            String requete = "select idPersonne from personne";
-            st = con.createStatement();
-            ResultSet rs = st.executeQuery(requete);
-
-            if (rs.last()) {
-                nb = rs.getInt(1);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return nb;
-    }
-
+    
 }

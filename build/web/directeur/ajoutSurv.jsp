@@ -5,7 +5,7 @@
 --%>
 <html>
     <head>
-        <title>Ajout Surveillant</title>
+        <title>${profils} | Ajout Surveillant</title>
     </head>
     <body>
         <%             if (session.getAttribute("log") != null) {
@@ -14,7 +14,7 @@
         <%@include file="barre_navDirector.jsp" %>
         <script>
             <c:if test="${!empty msg}">
-            alert("Surveillant enregistré avec succés");
+            alert("Surveillant enregistré avec succèss");
             </c:if>
         </script>
 
@@ -69,7 +69,7 @@
             </div>
         <% } else {
         %>
-        <jsp:forward page="../vue/SeConnecter.jsp"/>
+        <jsp:forward page="../connexion/login.jsp"/>
         <% }%> 
 
     </body>

@@ -31,7 +31,10 @@ public class DAOFactory {
         } catch (Exception e) {
             System.out.println("Erreur de chargement du piolte de la base");
         }
-        DAOFactory instance = new DAOFactory("jdbc:mysql://localhost:8889/francoarabe?useUnicode=true&characterEncoding=UTF-8", "root", "root");
+        //For Mac
+        //DAOFactory instance = new DAOFactory("jdbc:mysql://localhost:8889/francoarabe?useUnicode=true&characterEncoding=UTF-8", "root", "root");
+        //For Windows
+        DAOFactory instance = new DAOFactory("jdbc:mysql://127.0.0.1/francoarabe?useUnicode=true&characterEncoding=UTF-8", "root", "");
         return instance;
     }
 

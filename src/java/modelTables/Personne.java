@@ -13,13 +13,13 @@ public class Personne {
     
     private int idPersonne;
     private String login;
-    private String prenom;
     private String nom;
+    private String prenom;
     private String adresse;
     private String tel;
     private String motDePasse;
-    private String profils;
     private int etatPers;
+    private String profils;
     private String[] matiere; 
     private int idProf;
     private String idParent;
@@ -37,6 +37,18 @@ public class Personne {
         this.etatPers = etatPers;
     }
 
+    ///Contructeur Ajout Surveillant
+
+    public Personne(String login, String nom, String prenom, String adresse, String tel, String motDePasse, int etatPers, String profils) {
+        this.login = login;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.adresse = adresse;
+        this.tel = tel;
+        this.motDePasse = motDePasse;
+        this.etatPers = etatPers;
+        this.profils = profils;
+    }
     
     
     

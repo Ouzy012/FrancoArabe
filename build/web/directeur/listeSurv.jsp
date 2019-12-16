@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Liste des surveillants</title>
+        <title>${profils} | Liste des surveillants</title>
     </head>
     <body>
     <body>
@@ -24,6 +24,7 @@
                 <%@include file="../surveillant/barreNavSurv.jsp" %>
             </c:otherwise>
         </c:choose>
+        <c:if test="${! empty users}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -69,12 +70,12 @@
                                                 <td>${u.telephone}</td>
                                                 <c:if test="${profils eq 'Directeur'}">
                                                     <td>
-                                                        <a href="ControleurDirecteur?action=modifierSurv&&idSurv=${u.idPersonne}">
+                                                        <a href="ControleurDirecteur?action=modifierSurv&&login=${u.login}">
                                                             <img style="width: 30px; height: 30px;" src="modifier.png" alt="Modifier" id="modifier"/>
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a onclick="javascript: return confirmation();" href="ControleurDirecteur?action=supprimerSurv&&idSurv=${u.idPersonne}">
+                                                        <a onclick="javascript: return confirmation();" href="ControleurDirecteur?action=supprimerSurv&&login=${u.login}">
                                                             <img src="delete.png" style="height: 4vh;"/>
                                                         </a>
                                                     </td>
@@ -89,9 +90,13 @@
                 </div>
             </div>
         </div>
+        </c:if>
+        <c:if test="${empty users}">
+            <h3>Aucun(e) surveillant(e) n'a encore été ajouté</h3>
+        </c:if>
         <% } else {
         %>
-        <jsp:forward page="../vue/SeConnecter.jsp"/>
+        <jsp:forward page="../connexion/login.jsp"/>
         <% }%>  
     </body>
 </body>

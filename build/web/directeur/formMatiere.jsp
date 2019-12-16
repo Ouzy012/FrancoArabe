@@ -34,30 +34,7 @@
                         <h3>Enregistrer matière</h3>
                         <form action="ControleurDirecteur" method="POST">
                             <input type="hidden" name="action" value="validerMatiere" />
-                            <!--
-                            <div class="form-group">
-                                <label for="montant"></label>
-                                <input type="text" name="nomMatiere" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Langue matière</label>
-                                <select name="langueMatiere" class="form-control" required="">
-                                    <option>Arabe</option>
-                                    <option>Francais</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label></label>
-                                <div class="form-group">
-                                    <input type="text" name="nomArabe" class="form-control">
-                                </div>
-                                
-                            </div>
-                               
-                            
-                            -->
+                          
                             <label>Sélectionner langue matière</label>
                             <select id="fonction" onchange="myFunction()" class="form-control" name="langueMatiere">
                             <option value="">Sélectionner la langue de la matière</option>

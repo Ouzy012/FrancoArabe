@@ -386,7 +386,7 @@ public class DAOEleveImpl {
             return 1;
         }
     }
-    
+
     public int compte3(String ancienMdp) {
         String login = "null";
         Connection con;
@@ -409,29 +409,24 @@ public class DAOEleveImpl {
         }
     }
 
-    public int compte4(String ancienMdp) {
-        String login = "null";
+    public boolean determinerMotDePasse(String login, String ancienMdp) {
+        boolean result = false;
         Connection con;
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requete = "select loginSurv from surveillant where motDePasse='" + ancienMdp + "'";
+            String requete = "select login from personne where login='" + login + "' and motDePasse='" + ancienMdp + "'";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
-                login = rs.getString("loginSurv");
+                result = true;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if (!login.equals("null")) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return result;
     }
 
-    
     public String reclamation(String nomClasse, String nomMatiere, String an) {
 
         String loginProf = "";
@@ -866,11 +861,11 @@ public class DAOEleveImpl {
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requete = "select loginEleve,nom,prenom,adresse,dateNaissance,lieuNaissance,telephone,moyCompo1FR,moyCompo2FR,moyCompo3FR,moyCompo1AR,moyCompo2AR,moyCompo3AR from eleve where nomClasse = '" + nomCl + "' and annee = '" + an + "'";
+            String requete = "select elv.login,nom,prenom,adresse,dateNaissance,lieuNaissance,telephone,moyCompo1FR,moyCompo2FR,moyCompo3FR,moyCompo1AR,moyCompo2AR,moyCompo3AR from eleve elv, personne p where elv.login=p.login and nomClasse = '" + nomCl + "' and anneeScolaire = '" + an + "'";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {
-                Eleve el = new Eleve(null, rs.getString("nom"), rs.getString("prenom"), rs.getString("adresse"), rs.getString("telephone"), rs.getString("dateNaissance"), rs.getString("lieuNaissance"), null, rs.getString("loginEleve"), null, null);
+                Eleve el = new Eleve(null, rs.getString("nom"), rs.getString("prenom"), rs.getString("adresse"), rs.getString("telephone"), rs.getString("dateNaissance"), rs.getString("lieuNaissance"), null, rs.getString("login"), null, null);
                 el.setMoyCompo1FR(rs.getFloat("MoyCompo1FR"));
                 el.setMoyCompo2FR(rs.getFloat("MoyCompo2FR"));
                 el.setMoyCompo3FR(rs.getFloat("MoyCompo3FR"));
@@ -1151,7 +1146,7 @@ public class DAOEleveImpl {
         Statement st;
         try {
             con = daoFactory.getConnection();
-            String requete = "select annee from annee";
+            String requete = "select anneeScolaire from annee";
             st = con.createStatement();
             ResultSet rs = st.executeQuery(requete);
             while (rs.next()) {

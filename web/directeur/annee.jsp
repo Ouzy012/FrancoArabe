@@ -34,7 +34,7 @@
 
                         <div class="form-group">
                             <label>Ajouter une nouvelle Année Scolaire</label>
-                            <input type="text" name="nv-annee" placeholder="format 2018-2019" maxlength="9" onkeypress=" return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 45" class="form-control" required="">
+                            <input type="text" name="nv-annee" placeholder="format ${anInscr}" maxlength="9" onkeypress=" return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 45" class="form-control" required="">
                         </div>
 
                         <div class="form-group">

@@ -43,7 +43,7 @@
                                 </c:forEach>
                             </select>
                             <p>
-                                Sélectionnner seulement les matières francaises
+                                Sélectionnner seulement les matières françaises
                             </p>
                         </div>
 

@@ -29,7 +29,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="Controleur?action=accueil">
+                <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Accueil</span>
                 </a>
@@ -73,17 +73,20 @@
                         <a class="collapse-item" href="ControleurDirecteur?action=listerProfs">Professeur</a>
                         <a class="collapse-item" href="ControleurDirecteur?action=listerSurv">Surveillant</a>
                         <a class="collapse-item" href="ControleurDirecteur?action=classes">Les Classes</a>
-                        <a class="collapse-item" href="ControleurDirecteur?action=listeMatieres">Matiéres</a>
+                        <a class="collapse-item" href="ControleurDirecteur?action=listeMatieres">Matières</a>
                     </div>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="EDT?action=accueilEDT">
+                <!--<a class="nav-link" href="EmploiDuTemps?action=accueilEDT">-->
+                <a class="nav-link" href="ControleurDirecteur?action=accueilEDT">
+                    
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Créer EDT</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="EDT?action=afficherEDT">
+                <!--<a class="nav-link" href="EmploiDuTemps?action=afficherEDT">-->
+                <a class="nav-link" href="Controleur?action=accueil">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Afficher EDT</span></a>
             </li>                       

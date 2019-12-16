@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Modifier surveillant</title>
+        <title>${profils} | Modifier surveillant</title>
     </head>
     <body>
        
@@ -28,7 +28,7 @@
                     <div class="col-lg-4">
                         <form action="ControleurDirecteur" method="POST">
                             <input type="hidden" name="action" value="valideModSurv" />
-                            <input type="hidden" name="idPerson" value="${usr.idPersonne}" />
+                            <input type="hidden" name="login" value="${usr.login}" />
 
                             <div class="form-group">
                                 <label>Nom</label>
@@ -47,7 +47,8 @@
 
                             <div class="form-group">
                                 <label>Téléphone</label>
-                                <input type="text" name="telephone" value="${usr.telephone}" class="form-control"/>
+                                <input type="text" name="telephone" value="${usr.telephone}" maxlength="9" onkeypress=" return event.charCode >= 48 && event.charCode <= 57" class="form-control" required=""/>
+                               
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-success btn-block " type="submit">Modifier</button>
